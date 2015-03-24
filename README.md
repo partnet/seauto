@@ -50,7 +50,7 @@ repository.
 Getting Help
 ------------
 
-Join the [SeAuto Google Group](https://groups.google.com/forum/#!forum/seauto)
+Join [SeAuto at Google Groups](https://groups.google.com/forum/#!forum/seauto)
 to get help and keep up with SeAuto news!
 
 Or, tag your questions with 
@@ -58,7 +58,7 @@ Or, tag your questions with
 
 Documentation
 ------
-Please see the [documentation](//partnet.github.io/seauto/)
+Please see the [documentation.](//partnet.github.io/seauto/)
 
 
 How To Contribute
