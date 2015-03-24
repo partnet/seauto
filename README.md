@@ -2,10 +2,16 @@
 
 Introduction
 ------
-SeAuto is the necessary “merge between” testing automation frameworks and selenium. It is the last piece required to start developing automated tests - the glue between the test framework and Selenium. This solution allows good practices to be used from the start - such as using Page Object, Selenium's Page Factory, and an intermediate steps layer to create reusable pieces of code. These ideas have been developed, read, and used over the past several years.
+SeAuto is the necessary “merge between” testing automation frameworks and 
+Selenium. It is the last piece required to start developing automated 
+tests&mdash;the glue between the test framework and Selenium. This solution 
+allows good practices to be used from the start&mdash;such as using Page 
+Object, Selenium's Page Factory, and an intermediate steps layer to create 
+reusable pieces of code. These ideas have been developed, read, and used over 
+the past several years.
 
 
-#### So what does this framework provide?
+#### What does this framework provide?
 
 * Run against any of the major browsers: Firefox, Internet Explorer, Chrome, PhanomJs, and HTMLUnit
 * Run on Linux, Windows, and possibly Mac
@@ -21,41 +27,48 @@ SeAuto is the necessary “merge between” testing automation frameworks and se
 Information
 ------
 
-This parent project contains the proejcts for:
-* SeAuto-Core
-* SeAuto-JBehave
-* SeAuto-JUnit
+This parent project contains the projects for:
+* SeAuto core
+* JBehave support
+* JUnit support
+* Cucumber support
+* Selenium driver management
 
-The [change log](CHANGELOG.md) summarizes important differences between versions. 
-
+The [change log](CHANGELOG.md) summarizes important differences between 
+versions. 
 
 Build
 ------
 
-To build this project, clone the repo locally, and run:
+To build this project, clone the git repository and run:
 
 `mvn clean install`
 
-This will build and test the project, and install them into the local repository
+This will build and test the packages, and install them into the local 
+repository.
 
 Email Group
 ------
-**Note, this is NOT a internal group. Others outside of partnet can see this**
 
-[SeAuto Group](https://groups.google.com/forum/#!forum/seauto)
+Join the SeAuto Google Group to get help and keep up with SeAuto 
+news: [SeAuto Group](https://groups.google.com/forum/#!forum/seauto)
 
 
 Documentation
 ------
-Please see the [documentation](http://mercury.part.net/WebContent/#/getStarted)
+Please see the [documentation](//partnet.github.io/seauto/)
 
 
 How To Contribute
 ------
-Contributions are more then welcome. Feel free to create new issues in Github, clone the repository, and send a pull request.
+Contributions are welcome. Feel free to [file issues in 
+Github,](//github.com/partnet/seauto/issues) or clone the repository, make 
+your changes, and send us a pull request.
 
-#### Code formatting
-Use two spaces instead of a tab. Examples of method blocks, switch statements, etc.. can be found in the code base. If there is every a question, feel free to email the user group.
+#### Contribution code formatting
+Please follow the example of existing code. As long as spaces are used rather 
+than tabs, most other sins can be forgiven. Any questions can be directed to 
+the Google user group.
 
 
 
