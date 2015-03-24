@@ -47,12 +47,14 @@ To build this project, clone the git repository and run:
 This will build and test the packages, and install them into the local 
 repository.
 
-Email Group
-------
+Getting Help
+------------
 
-Join the SeAuto Google Group to get help and keep up with SeAuto 
-news: [SeAuto Group](https://groups.google.com/forum/#!forum/seauto)
+Join the [SeAuto Google Group](https://groups.google.com/forum/#!forum/seauto)
+to get help and keep up with SeAuto news!
 
+Or, tag your questions with 
+[seauto](http://stackoverflow.com/questions/tagged/seauto) on StackOverflow.
 
 Documentation
 ------
