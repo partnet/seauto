@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.partnet</groupId>
+    <artifactId>seauto</artifactId>
+    <version>0.0.7-SNAPSHOT</version>
+  </parent>
+  <artifactId>seauto-core</artifactId>
+  <packaging>jar</packaging>
+  <properties>
+
+    <!-- Selenium Properties -->
+    <!-- We are stuck with this version of selenium (2.43.1) because of https://github.com/detro/ghostdriver/issues/397 -->
+    <seleniumhq.selenium-server.version>2.45.0</seleniumhq.selenium-server.version>
+    <detro.phantomjs.version>1.2.0</detro.phantomjs.version>
+
+    <!-- Other Properties -->
+    <jboss.weld-se.version>1.1.28.Final</jboss.weld-se.version>
+    <hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
+    <reflections.version>0.9.9-RC1</reflections.version>
+
+  </properties>
+  <dependencies>
+    <!-- Selenium dependencies -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${seleniumhq.selenium-server.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.detro</groupId>
+      <artifactId>phantomjsdriver</artifactId>
+      <version>${detro.phantomjs.version}</version>
+      <exclusions>
+        <exclusion>
+          <!-- Use the remote driver packaged with selenium-java -->
+          <artifactId>selenium-remote-driver</artifactId>
+          <groupId>org.seleniumhq.selenium</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld.se</groupId>
+      <artifactId>weld-se</artifactId>
+      <version>${jboss.weld-se.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.21</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20140107</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.9.4</version>
+    </dependency>
+  </dependencies>
+</project>
