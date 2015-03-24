@@ -1,0 +1,24 @@
+<title>Step Objects</title>
+
+<h2>Step Objects</h2>
+
+
+<p>Step objects are simple POJOs that provide a logical grouping of related step methods.
+
+<p>To add a new Step object, define the new class in the <b>step</b> package or subpackage. Steps should be packaged 
+according to functionality/behaviour. New step classes probably need/want a <a href="#/storyContext">StoryContext</a> 
+member variable that gets injected by the container. Other than the StoryContext, 
+Step objects are usually stateless.  It's recommended that Step classes not extend 
+from any class to maintain a simple step objects.  Additionally, Step classes should only contain public Step methods 
+(see below) or private helper methods.  Any desire for protected or package viewable methods probably indicate the 
+need for a <a href="#/sequence">Sequence object</a>.
+
+
+<h3>Step methods</h3>
+Step methods should have an appropriate javadoc comment that describes what the method does. 
+Additionally, a stated pre-condition and post-condition indicating the assumed current browser 
+page upon method entry and upon method exit is recommended.
+
+<h3>Example Step class</h3>
+ 
+<div ui-view="stepExamples"></div>

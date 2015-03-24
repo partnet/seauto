@@ -1,1 +1,75 @@
-Hello World!
+<!DOCTYPE html>
+<html data-ng-app="seautoApp">
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="lib/jquery/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="lib/google-code-prettify/prettify.css">
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="css/animate.css"> -->
+
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="lib/angular/angular-route.min.js"></script>
+<!-- <script type="text/javascript" src="lib/angular/angular-animate.min.js"></script> -->
+<!-- <script type="text/javascript" src="lib/angular-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script> -->
+<script type="text/javascript" src="js/seautoApp.js"></script>
+<script src="lib/google-code-prettify/prettify.js"></script>
+<!-- <script src="https://raw.githubusercontent.com/jgallen23/toc/master/dist/toc.min.js"></script> -->
+<script src="lib/angular-ui-router/angular-ui-router.min.js"></script>
+ 
+</head>
+<body>
+  <div id="top"></div>
+  <div id="header" class="container">
+  <img src="img/PNLogoBlue.png" style="padding: 20px 20px 20px 20px">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+      
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+          <a class="navbar-brand" ui-sref="intro"><b>Se</b><i>Auto</i></a>
+        </div>
+  
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a ui-sref="features">Features</a></li>
+            <li class="dropdown"><a class="dropdown-toggle"
+              data-toggle="dropdown" role="button" aria-expanded="false" href="">Documentation
+                <span class="caret"></span>
+            </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a ui-sref="getStarted">Get Started</a></li>
+                <li><a ui-sref="createTests">Create Tests</a></li>
+                <li><a ui-sref="runTests">Run Tests</a></li>
+                <li><a ui-sref="reports">Reports</a></li>
+                <!-- <li><a href="#/codeOrg">Code Organization</a></li> -->
+                <li class="divider"></li>
+                <li><a ui-sref="sampleFiles">Explanation of Sample Files</a></li>
+                <li><a ui-sref="stepObjects">Step Objects</a></li>
+                <li><a ui-sref="pageObjects">Page Objects</a></li>
+                <li class="divider"></li>
+                <li><a ui-sref="siteObjects">Site Objects</a></li>
+                <li><a ui-sref="storyContext">Story Context</a></li>
+                <li><a ui-sref="configuration">Configuration</a></li>
+                <li><a ui-sref="logging">Logging</a></li>
+              </ul></li>
+              <li><a ui-sref="contribute">Contribute</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div ng-controller="stateChangeSuccessCtrl"></div>
+  <div id="underMenuSection">
+    <div id="mainTextArea" class="container">
+      <div data-ui-view></div>
+    </div>
+  </div>
+</body>
+</html>

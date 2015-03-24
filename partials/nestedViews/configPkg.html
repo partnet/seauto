@@ -1,0 +1,39 @@
+<h3>Config Package<small> - <code>src/test/java/&lt;project&gt;/config</code></small></h3>
+<p>This is where the configuration of the tests should reside. All projects should have the following packages:
+
+<h4>Framework</h4>
+<p>This is where some of the configurable SeAuto framework reside
+<p>Both of these files are required to use the StoryContext feature. See <a href="#/storyContext#settingUp">Story Context: Setup</a>
+for more information on how to create and use the objects.
+
+
+<ul>
+  <li>StoryContext</li>
+  <li>StoryContextProvider</li>
+</ul>
+
+<h4 id="selenium">Selenium</h4>
+<p>
+  Inside of the Selenium package,
+  <code>DriverProviderProducer</code>
+  and
+  <code>ConfigurableDriverProvider</code>
+  are found. These are here to maintain the lifecycle of DriverProvider,
+  which provides a thread safe WebDriver. They are extracted in this way
+  so specific implementations of the WebDriver can be created.
+
+
+<p>Defaults can be used and these files can be removed by setting beans.xml to:
+<pre class="prettyprint">
+&lt;beans
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+  http://java.sun.com/xml/ns/javaee
+  http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"&gt;
+
+  &lt;alternatives&gt;
+    &lt;class&gt;com.partnet.automation.selenium.DefaultDriverProviderProducer&lt;/class&gt;
+  &lt;/alternatives&gt;
+&lt;/beans&gt;
+</pre>

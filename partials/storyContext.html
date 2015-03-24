@@ -1,0 +1,136 @@
+<title>Story Context</title>
+
+<h2>Story Context</h2>
+
+<p>A class used to represent the shared context of a story or test. It is
+used to maintain state between story steps. A new instance is created
+for each story, injected into Step classes (via
+<code>@Inject</code>
+), used during the lifecycle of a single test, and deleted at the end of
+the story (hence the
+<code>@StoryScoped</code>
+named annotation). An example of using the StoryContext for maintaining
+state would be to save text entered in a field during one step for
+future use and later retrieving that text in a different step.
+Additionally, the StoryContext object provides access to the Site object
+as well as means to create instances of Page objects. Defined as a Step
+class member variable as follows:
+
+<pre class="prettyprint">
+@Inject
+@StoryScoped
+private StoryContext context;
+</pre>
+
+Examples
+
+Passing Variables across steps
+<pre class="prettyprint">
+// state variable keys can be of whatever type; Strings are useful since they provide nice toString() impl if/when invoked
+private static final Object SHOPPING_CART_ITEMS = new String("SHOPPING_CART_ITEMS");
+ 
+@When("I add new items to the shopping cart")
+public void whenIAddNewItemsToTheCart()
+{
+  ...
+  // save object to context
+  context.addVariable(SHOPPING_CART_ITEMS, items);  // keys just have to be unique
+}
+ 
+@Then("the shopping cart will reflect these changes")
+public void thenCartReflectChange()
+{
+  // retrieve saved context value
+  List&lt;Items&gt; expectedCartItems = (List&lt;Items&gt;)context.getVariable(SHOPPING_CART_ITEMS);  // same instance as before
+  ...
+}
+</pre>
+
+<h2 id="settingUp">Creating the Story Context</h2>
+<p>
+  Since we rely on Weld to do the dependency injection, both the
+  StoryContext and a StoryContextProducer needs to be created to provide
+  a configurable and injectable StoryContext. StoryContext extends
+  <code>AbstractStoryContext</code>. 
+  It is abstracted in this way to provide the most configurable
+  context to be passed around from step class to step class.
+  
+  <p>These objects typically are located in <code>src/test/java/&lt;project&gt;/config/framework</code>
+  
+<h4>StoryContext.java</h4>
+This is what a typical StoryContext.java looks like
+<pre class="prettyprint">
+public class StoryContext
+  extends AbstractStoryContext
+{
+  PageProvider pageProvider;
+  BingSiteProvider siteProvider;
+  
+  @Inject
+  StoryContext(final PageProvider pageProvider, final BingSiteProvider siteProvider)
+  {
+    this.pageProvider = pageProvider;
+    this.siteProvider = siteProvider;
+  }
+  
+  public BingSite site()
+  {
+    return siteProvider.createSite();
+  }
+  
+  
+  /**
+   * Get a reference to a specified {@link Page} instance.
+   * Shortcut/alternative to using the {@link #pages()} method just to invoke {@link PageProvider#get(Class)}.
+   * 
+   * @param clazz  type of {@link Page} 
+   * @return  a {@link Page} instance of the requested type
+   */
+  public &lt;T extends Page&gt; T getPage(Class&lt;T&gt; clazz)
+  {
+    return this.pageProvider.get(clazz);
+  }
+}
+</pre>
+<br/>
+<h4>StoryContextProvider.java</h4>
+<p>The purpose of the StoryContextProvider is to manage the lifecycle of the StoryContext. 
+<p>For each thread, <code>initialize()</code> and <code>end()</code> should be called
+<p>A default implementation is shown below
+<pre class="prettyprint">
+public final class StoryContextProvider
+{
+
+  private static final Logger LOG = LoggerFactory.getLogger(StoryContextProvider.class);
+
+  private static final ThreadLocal&lt;StoryContext&gt; THREAD_LOCAL_CONTEXT = new ThreadLocal&lt;StoryContext&gt;();
+
+  private final StoryContext context;
+
+  @Inject
+  public StoryContextProvider(final StoryContext context)
+  {
+    this.context = context;
+  }
+
+  public void initialize()
+  {
+    StoryContextProvider.LOG.debug("Initializing scenario context on thread {}", Thread.currentThread());
+    StoryContextProvider.THREAD_LOCAL_CONTEXT.set(this.context);
+  }
+
+  public void end()
+  {
+    StoryContextProvider.LOG.debug("Ending scenario context on thread {}", Thread.currentThread());
+    StoryContextProvider.THREAD_LOCAL_CONTEXT.remove();
+  }
+
+  @Produces<!-- @StoryScoped -->
+  public StoryContext getContext()
+  {
+    return StoryContextProvider.THREAD_LOCAL_CONTEXT.get();
+  }
+}
+</pre>
+
+

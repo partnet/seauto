@@ -1,0 +1,31 @@
+<title>Code Organization</title>
+
+<h2>Archetype Code Organization</h2>
+
+<p>Archetypes have some basic structures to them. It is a suggestion to layout the basis of your automated tests
+ in this way
+
+<h4>In the <code>src/test/java package</code></h4>
+
+<ul>
+  <li><b>config</b> - responsible for the configuration and setup of the framework</li>
+  <li><b>page</b> - responsible for the page and site objects</li>
+  <li><b>step</b> - responsible for the step objects</li>
+</ul>
+
+<h4>In <code>src/test/resources</code></h4>
+
+<ul>
+  <li><b>META-INF</b> - beans.xml to allow Weld to work</li>
+  <li><b>stories</b> - this is where the .story files are located. .story files is where the written individual steps are located</li>
+  <li><b>config.properties</b> - the properties for the running tests.</li>
+  <li><b>log4j.properties</b> - the logger properties for the running tests.</li>
+</ul>
+
+<h4>In <code>resources/</code></h4>
+<ul>
+  <li><b>selenium</b> - the binaries for the various drivers</li>
+</ul>
+
+<h2>Library Code Layout</h2>
+

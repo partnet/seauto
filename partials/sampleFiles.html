@@ -1,0 +1,38 @@
+<title>Explanation of Sample Files</title>
+
+
+<h2>Explanation of Generic Sample Files</h2>
+
+<p>In the archetypes/sample projects, there are several files that are included to help 
+get right into testing. Here is an explanation of each of these files.
+
+<pre class="prettyprint">
+.
+├── config
+│   ├── framework
+│   │   ├── StoryContext.java
+│   │   └── StoryContextProvider.java
+│   └── selenium
+│       ├── ConfigurableDriverProvider.java
+│       └── DriverProviderProducer.java
+├── page
+└── step
+</pre>
+
+<div ui-view="configPkg@sampleFiles"></div>
+
+<h3>Page and Step packages<small> - <code>src/test/java/&lt;project&gt;/&lt;page or step&gt;</code></small></h3>
+<p>The files in these packages are the basics of the sample tests.
+  They are there only as a template, and can be removed. See <a href="#/createTests#top">Create Tests</a> for information
+  on how to begin creating tests.
+<p>Alternatively, see <a href="#/pageObjects">Page Objects</a> and <a href="#/stepObjects">Step Objects</a> for 
+further information on the objects that live in the <code>page</code> and <code>step</code> packages.
+  
+<h3>Beans.xml<small> - <code>src/test/resources/META-INF/beans.xml</code></small></h3>
+<p>This file is typically completely blank if using one of the
+  archetypes. It is required to tell the container to scan for weld
+  dependencies.
+  
+  
+<p>Some configurations can be set to create more default projects.
+  See <a href="#/sampleFiles#selenium">Selenium</a> above for an example of this

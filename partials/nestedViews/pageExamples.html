@@ -1,0 +1,45 @@
+<pre class="prettyprint">
+class FooPage extends Page
+{
+  @FindBy(id = "someFieldId")
+  private WebElement someField;
+ 
+  @FindBy(css = "div.page-actions.clearfix input.primary[value='Save']")  // no element id so we have to use a fancier selector to find the button
+  private WebElement saveBtn;
+ 
+  public FooPage(DependencyContainer depContainer) {
+    super(depContainer);
+  }
+ 
+  @Override
+  public void verify() throws IllegalStateException
+  {
+    // Could verify by title 
+    super.verifyByTitle("This Page's Title");
+ 
+    // Or, if page title wasn't unique (among other pages) could use a By object to select a specific element
+    super.verifyBySelector(By.cssSelector("table#searchTransactionResults.datatables tbody td.alignCenter"));
+  }
+ 
+  @Override
+  protected void ready()
+  {
+    // Waits up to 20 seconds for the 'readyBtn' to load, but will return sooner if button is loaded
+    waitForPresenceOfAllElements(By.id("readyBtn"), 20);
+  }
+ 
+  public FooPage setSomeFieldValue(String value) {
+    return super.setValue(this.someField, value);  // or whatever makes sense (see Page.setValue)
+  }
+ 
+  public void submit() {
+    // click save button and wait for next page to load (see Page.clickAndWait)
+    super.clickAndWait(saveBtn);
+  }
+ 
+  public void clickLink() {
+    // click appropriate link and probably wait for next page to load (see Page.clickAndWait)
+    super.clickAndWait(saveBtn);
+  }
+}
+</pre>

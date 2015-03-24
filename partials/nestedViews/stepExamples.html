@@ -1,0 +1,118 @@
+<script src="js/tabSync.js"></script>
+
+<div role="tabpanel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="" data-target=".jbehave" aria-controls="jbehave" role="tab" data-toggle="tab">JBehave</a></li>
+    <li role="presentation"><a href="" data-target=".cucumber" aria-controls="cucumber" role="tab" data-toggle="tab">Cucumber</a></li>
+    <li role="presentation"><a href="" data-target=".junit" aria-controls="junit" role="tab" data-toggle="tab">JUnit</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active in fade jbehave">
+      <code>public void</code> methods inside JBehave Step classes are annotated with <code>@Given</code>, <code>@When</code> or 
+      <code>@Then</code> that can be matched to a line of a story.
+      <p>Step methods map the individual lines of a story file (steps) to
+ executable java code and the appropriate Page object calls. 
+ <p>To enable JBehave to locate the step, it must have the 
+ class-level <code>@WeldStep</code> annotation.
+    <pre class="prettyprint">
+@WeldStep
+public class SearchSteps
+{
+  
+  @Inject
+  private StoryContext context;
+  
+  @Given("I am on Bing's home page")
+  public void givenIAmOnBingssHomePage()
+  {
+    context.site().open();
+  }
+  
+  @When("I search for $searchPhrase")
+  public void whenIsearchForPhrase(String searchPhrase)
+  {
+    ...
+  }
+  
+  @Then("I will see Partnet's home page in the list of results")
+  public void thenIWillSeePartnetInResults()
+  {
+    ...
+  }
+}
+
+</pre></div>
+    <div role="tabpanel" class="tab-pane fade cucumber">
+      <code>public void</code>
+      methods inside Cucumber Step classes are annotated with
+      <code>@Given</code>, <code>@When</code> or <code>@Then</code>
+      that can be matched to a step in the feature file.
+      <p>
+        Individual steps of a feature file map directly to a specific annotated
+        executable java code method. Regex is used inside of the steps annotation to 
+        perform the matching. From there, steps call the
+        individual page objects. 
+      <p>These step classes are located in the test <code>step</code> package
+      <pre class="prettyprint">
+public class SearchSteps
+{
+  
+  @Inject
+  private StoryContext context;
+  
+  @Given("^I am on Bing's home page$")
+  public void givenIAmOnBingssHomePage()
+  {
+    context.site().open();
+  }
+  
+  @When("^I search for (.*)$")
+  public void whenIsearchForPhrase(String searchPhrase)
+  {
+    ...
+  }
+  
+  @Then("^I will see Partnet's home page in the list of results$")
+  public void thenIWillSeePartnetInResults()
+  {
+    ...
+  }
+}
+</pre>
+    </div>
+    <div role="tabpanel" class="tab-pane fade junit">
+      <p>JUnit steps are POJOs. The step class is injected into the
+        test class. From this point, it is a matter of simply defining
+        step methods to perform their desired action.
+      <p>Even though page objects can be called from individual
+        tests using JUnit, This extra layer is recommended because it
+        creates reusable sections of code. Imagine having to redefine
+        the login routine for each test.
+      <pre class="prettyprint">
+public class SearchSteps
+{
+  
+  @Inject
+  private StoryContext context;
+  
+  public void givenIAmOnBingsHomePage()
+  {
+    context.site().open();
+  }
+  
+  public void whenIsearchForPhrase(String searchPhrase)
+  {
+    ...
+  }
+  
+  public void thenIWillSeePartnetInResults()
+  {
+    ...
+  }
+}</pre>
+    </div>
+  </div>
+</div>

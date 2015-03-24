@@ -1,0 +1,205 @@
+<title>Page Objects</title>
+<div id="toc"></div>
+<h2>Page Objects</h2>
+
+<p>Page objects represent the current browser page that the user is
+  interacting with. Page objects describe the primary html elements and
+  how selenium sets values, reads values, and performs actions (click,
+  submit, etc.) on those elements. Optionally, read
+  http://martinfowler.com/bliki/PageObject.html for an overview.
+<p>The Page object abstract base class is
+  com.partnet.automation.page.Page.
+<p>Useful Methods
+<ul>
+  <li>Page.verify() - Required override. Logic is placed here to
+    uniquely identify the current browser page (eg. Page title). If the
+    title is not unique to this page, another html element's value may
+    be used. It is recommended to use the helper methods below to
+    uniquely identify the current page.
+    <ul>
+      <li>Page.verifyByTitle(String) - Specify the page title</li>
+      <li>Page.verifyBySelector(By) - Specify a html element with a
+        By object</li>
+      <li>Page.verifyByWebElement(WebElement) - Specify a
+        WebElement object by passing it directly</li>
+    </ul>
+  </li>
+  <li>Page.ready() - Optional override. This method should contain
+    logic that indicates to the Step class that the current browser page
+    is ready for user interaction (clicking buttons or setting field
+    values). This method is especially useful when dealing with
+    AJAX-based or long load-time pages that have a built-in delay. Users
+    know to wait for a page to finish loading, but Selenium will proceed
+    as quickly as possible through a test. The Page.ready method
+    provides the time for the page to be in a ready state. The time
+    value is the maximum time in seconds allowed before a timeout will
+    occur. The helper methods poll every 500 milliseconds checking for
+    readiness, and will return as soon as ready state is achieved. It is
+    recommended to use the various HtmlView.waitFor() helper methods to
+    implement wait times for a page or elements of the page to load.</li>
+  <li>Page.initialize() - simply invokes Page.ready() and
+    Page.verify(). Only intended to be invoked by the framework. Client
+    code can ignore this method.</li>
+</ul>
+<p>see HTMLView
+<p>The essential principle is that there is only one place in your
+  test suite with knowledge of the structure of the HTML of a particular
+  page or part of a page. This is the place for the code to make use of
+  the Selenium API for interacting with the browser. It's encouraged to
+  have Page set* methods return references to the same page object (i.e.
+  return this;) to facilitate method chaining as follows:
+<pre class="prettyprint">
+FooPage page = ...
+page
+  .setId()
+  .setAddress()
+  .selectBar()
+  .submit();
+</pre>
+
+<p>However, methods on Page objects should not return other Page objects because this could end up polluting the page API to support different testing scenarios (see below for an example).   HtmlView.clickAndWait and HtmlView.setValue automatically return the same Page object (i.e. return this; ).  See Best Practices section below...
+<pre class="prettyprint">
+class FooPage {
+  public BarPage submit() {
+  }
+  public FooPage submitWithError() {
+  }
+  public CatPage submitWithOtherError() {
+  }
+}
+</pre>
+
+Additionally, this approach could lead to too much fluency in the page APIs (e.g. FooPage.submit().setId().submit().select().click(), etc, etc) where it would be difficult in the calling code (Step classes) to determine what page a given method exists on (see Demeter's Law). Since the Step classes are the ones really driving the tests and know the expected results, let them do it. A Page shouldn't know how to get to itself or where it goes afterwards. Therefore, the following is how FooPage should be implemented.
+
+<h3>Example Page Object</h3>
+<!-- <pre class="prettyprint">
+class FooPage extends Page
+{
+  @FindBy(id = "someFieldId")
+  private WebElement someField;
+ 
+  @FindBy(css = "div.page-actions.clearfix input.primary[value='Save']")  // no element id so we have to use a fancier selector to find the button
+  private WebElement saveBtn;
+ 
+  public FooPage(DependencyContainer depContainer) {
+    super(depContainer);
+  }
+ 
+  @Override
+  public void verify() throws IllegalStateException
+  {
+    // Could verify by title 
+    super.verifyByTitle("This Page's Title");
+ 
+    // Or, if page title wasn't unique (among other pages) could use a By object to select a specific element
+    super.verifyBySelector(By.cssSelector("table#searchTransactionResults.datatables tbody td.alignCenter"));
+  }
+ 
+  @Override
+  protected void ready()
+  {
+    // Waits up to 20 seconds for the 'readyBtn' to load, but will return sooner if button is loaded
+    waitForPresenceOfAllElements(By.id("readyBtn"), 20);
+  }
+ 
+  public FooPage setSomeFieldValue(String value) {
+    return super.setValue(this.someField, value);  // or whatever makes sense (see Page.setValue)
+  }
+ 
+  public void submit() {
+    // click save button and wait for next page to load (see Page.clickAndWait)
+    super.clickAndWait(saveBtn);
+  }
+ 
+  public void clickLink() {
+    // click appropriate link and probably wait for next page to load (see Page.clickAndWait)
+    super.clickAndWait(saveBtn);
+  }
+}
+</pre> -->
+
+<p>To add a new Page object, define the new Page subclass (in page package or subpackage). The typed PageProvider.get(Class) method can be used to instantiate new instances of the new Page subclass. References to Page objects should not be scoped any broader than individual step methods in order to minimize the possibility of stale objects.
+
+<p>Pages should be packaged according to application url (i.e. acct/registration) since naming is hard and page objects do correlate to jsps.
+
+<p>Page objects should not contain assertions. Assertions should be in Step objects or, if necessary, Page-specific or general Assert objects (see com.partnet.test.PNAssert).
+
+
+<h3 id="panel-objects">Panel Objects</h3>
+
+Panels provide similar functionality to Pages, but are intended as a means of re-use or as a way of breaking down a complex page into small reusable components. Pages contain Panels. Panels don't know about other panels or the Pages they're contained in.
+
+To add a new Panel object, define the new Panel subclass (see below regarding package). The generic creation method PanelProvider.get(Class) can be used to instantiate new Panel instances inside of Page Objects. Panels should be packaged in 1 of 2 ways.
+
+<ul>
+  <li>For panels specific to pages, they should be in the same package as their related Page objects.</li>
+  <li>For shared panels (panels used on multiple pages), they should be located in a panel package or subpackage nested under the page package.</li>
+</ul>
+
+<h4>Example Panel Object Implementation</h4>
+<pre class="prettyprint">
+public class SideInfoPanel
+  extends Panel
+{
+
+  @FindBy(id = "learnMore")
+  private WebElement learnMoreBtn;
+  
+  public SideInfoPanel(WebDriver webDriver)
+  {
+    super(webDriver);
+  }
+  
+  public void clickLearnMore()
+  {
+    super.clickAndWait(learnMoreBtn);
+  }
+}
+</pre>
+
+<h4 id="example-page-object-accessing-panel">Example Page Object accessing Panel</h4>
+As you can see, having these panels provide reuse if some classes appear on several different pages
+<pre class="prettyprint">
+public class HomePage
+  extends Page
+{
+
+  @FindBy(css = "[name='q']")
+  private WebElement searchBarInput;
+
+  @FindBy(id = "sb_form_go")
+  private WebElement searchButton;
+  
+  private SideInfoPanel infoPanel = panelProvider.get(SideInfoPanel.class);
+  
+  public HomePage(DependencyContainer depContainer)
+  {
+    super(depContainer);
+  }
+
+  public void clickLogin()
+  {
+    infoPanel.clickLearnMore();
+  }
+ ...
+</pre>
+
+
+<h3>Best Practices</h3>
+
+<b>Prefer WebElement.click()</b> - Prefer the <code>WebElement.click()</code> method to the <code>WebElement.submit()</code> method as it more accurately simulates what an actual user can do. However, you probably really should be using **HtmlView.clickAndWait()**.
+
+<b>HtmlView.java base class</b>
+<ul>
+  <li><b>clickAndWait()</b> - There are some known issues with WebElement.click() when used to trigger events that cause page loads in older IE browsers. As such, this method should be used instead for triggering these events.</li>
+  <li><b>setValue()</b> - When implementing Page objects and the setter methods contained within, the use of the <code>com.partnet.automation.HtmlView.setValue()</code> method is recommended. This method clears any text in the field before setting the new value.</li>
+</ul>
+
+<b>Avoid, minimize, defend-against non-specific FindBy use</b> - Not all page DOMs are a joy to work with and as a result, you may need to use a less-than-ideal selector to get at the necessary page elements. If/when you find yourself in this situation, consider providing some scope to your selector via <code>@FindBys</code>.
+<p>For example:</p>
+<pre class="prettyprint">
+@FindBys({
+  @FindBy(css = ".headlinesPanel .panel-body"),
+  @FindBy(linkText = "Non-specific Link Text")})
+private WebElement nonSpecificLink;
+</pre>

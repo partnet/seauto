@@ -1,0 +1,75 @@
+<title>Logging</title>
+
+<h2>Logging</h2>
+
+<p>Logging is an essential part of an automation framework. If there is a failure, the exact cause must be found.
+SeAuto is build with slf4j, so implementing this logging will be easily done.
+
+<p>To add logging to any class file, simply add this to the top of the page:
+<pre class="prettyprint">
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Foo {
+
+  private static final Logger LOG = LoggerFactory.getLogger(Foo.class);
+  
+  ...
+}
+</pre>
+Replace <code>Foo</code> for the actual class name you want to implement the logger. That is it! Your class is 
+ready to start logging.
+
+<p>
+  For every sample project, there is a log4j.properties located in <code>src/test/resources</code> folder. The 
+  format and logging locations can be changed by editing this file.
+
+<div role="tabpanel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="" data-target=".jbehave" aria-controls="jbehave" role="tab" data-toggle="tab">JBehave</a></li>
+    <li role="presentation"><a href="" data-target=".cucumber" aria-controls="cucumber" role="tab" data-toggle="tab">Cucumber</a></li>
+    <li role="presentation"><a href="" data-target=".junit" aria-controls="junit" role="tab" data-toggle="tab">JUnit</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active in fade jbehave">
+      <p>The log file, by default, is located at
+        <code>target/jbehave/_storiesLog.txt</code>. 
+        It is located in this location, so the log file will be
+        displayed in the top of the generated reports.</div>
+    <div role="tabpanel" class="tab-pane fade cucumber">
+      <p>
+        If you have read <a
+          ui-sref="configuration({scrollTo: '#parallel'})">Running
+          tests in Parallel</a> then you understand that each thread is
+        executed by a completely separate JVM. The regular threading
+        model won't work. Simply logging what thread the current log
+        statement is coming from will result in every test running 
+        in parallel reporting from the main thread. This is a major problem
+        when trying to pinpoint a failure.
+      
+      <p>
+        If running the tests with
+        <code>@RunWith(SeAutoCucumber.class)</code>, the name of 
+        the class that is executing the tests will be
+        placed into the logger by default. In fact, that is currently
+        the entire purpose of the SeAutoCucumber class.
+      
+      <p>
+        If you are using the cucumber example project, then a log file
+        is created and located in the
+        <code>target/seauto/tests.log</code>
+      <p>In addition to just logging, this can also help see what junit runner needs to be adjusted 
+      <p>Adding to this log file is just like any other framework.
+      
+    </div>
+    <div role="tabpanel" class="tab-pane fade junit">
+      <p>The log file, by default, is located at
+        <code>target/seauto/tests.log</code>. 
+        displayed in the top of the generated reports.
+        </div>
+  </div>
+</div>

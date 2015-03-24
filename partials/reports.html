@@ -1,0 +1,27 @@
+<title>Reports</title>
+<h2>Reports</h2>
+
+<p>The different frameworks have different ways reports are created.
+
+<div role="tabpanel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="" data-target=".jbehave" aria-controls="jbehave" role="tab" data-toggle="tab">JBehave</a></li>
+    <li role="presentation"><a href="" data-target=".cucumber" aria-controls="cucumber" role="tab" data-toggle="tab">Cucumber</a></li>
+    <li role="presentation"><a href="" data-target=".junit" aria-controls="junit" role="tab" data-toggle="tab">JUnit</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active in fade jbehave">
+      <p>HTML reports are generated at the end of the test results, The index is located in <code>target/jbehave/view</code>
+    </div>
+    <div role="tabpanel" class="tab-pane fade cucumber">
+      <p>The reports are generated like regular junit tests, located in <code>target/surefire-reports</code>
+    </div>
+    <div role="tabpanel" class="tab-pane fade junit">
+      <p>Reports that are generated for the JUnit sample project are plain old junit reports. They are located in
+      <code>target/surefire-reports</code> and screenshots are located in <code>target/screenshot</code>
+    </div>
+  </div>
+</div>

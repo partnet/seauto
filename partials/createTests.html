@@ -1,0 +1,160 @@
+<title>Create Tests</title>
+
+<h2>Create Tests</h2>
+<p>Due to the the nature of this framework, there will be several
+  different ways to create tests. Creating tests for Cucumber, JBehave,
+  and JUnit will be covered in this section.
+<h3>Define Test</h3>
+<p>All tests have a set of instructions that contain the steps necessary 
+  to execute the tests. These instructions are
+ different for each framework:
+
+<div role="tabpanel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="" data-target=".jbehave" aria-controls="jbehave" role="tab" data-toggle="tab"">JBehave</a></li>
+    <li role="presentation"><a href="" data-target=".cucumber" aria-controls="cucumber" role="tab" data-toggle="tab">Cucumber</a></li>
+    <li role="presentation"><a href="" data-target=".junit" aria-controls="junit" role="tab" data-toggle="tab">JUnit</a></li>
+  </ul>
+  
+    <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade active in jbehave">
+      <p>JBehave calls these sets of instructions story files. They are Given/When/Then statements that
+      are located inside of a <code>.story</code> file. These files are located at
+      <code>src/test/resources/stories/</code>. A example .story file looks like this:
+      <pre class="prettyprint">
+Search Bing for information
+
+Narrative:
+In order to know more about Partnet
+As a tester
+I want to search for their website 
+
+Meta:
+@browser firefox
+
+Scenario: Search bing for Partnet
+Given I am on Bing's home page
+When I search for Partnet
+Then I will see Partnet's home page in the list of results
+      </pre>
+      
+      Lets go though this line by line. The first line is the title of the test. 
+      <p>The Narrative gives a brief overview to the story to describe some functionality.
+      <p>The Meta tag is a JBehave feature, to allow stories to be tagged for various reasons, including 
+      filtering stories. A feature that the SeAuto JBehave sample project provides is launching
+      a specific browser per story. The following @browser meta tags are available, and are not case
+      sensitive: 
+      <ul>
+        <li>Firefox</li>
+        <li>IE</li>
+        <li>PhantomJs</li>
+        <li>HTMLUnit</li>
+      </ul>
+      <p>In the SeAuto JBehave sample, browsers can't be specified per scenario. One browser
+      is created for the entire story at the story level.
+      
+      <p>Scenario defines a section of the test
+      <p>Given/When/Then are the steps and describe what to test. The match directly with 
+      annotated methods.
+      <p>Specifics about the story syntax can be found on JBehave's website.
+      
+    </div>
+    <div role="tabpanel" class="tab-pane fade cucumber">
+      <p>
+        Cucumber calls these sets of instructions features. They are
+        Given/When/Then statements that are located inside of a
+        <code>.feature</code>
+        file. They are located at
+        <code>src/test/resources/&lt;package-name&gt;/</code>.
+        It is packaged with a direct relation to where the CucumberRunner is located, 
+        with the exception of being in the <code>src/test/resources</code> folder instead of 
+        <code>src/test/java</code>.
+        
+        
+      <pre class="prettyprint">
+Feature: Search Bing for information
+
+  @firefox
+  Scenario: Search bing for Partnet
+    Given I am on Bing's home page
+    When I search for Partnet
+    Then I will see Partnet's home page in the list of results
+      </pre>
+      
+      Going though this line by line, The first line is the title of the test and needs to start with <code>Feature</code>
+      <p>The <code>@firefox</code>annotation specifies what browser to use for that specific test. This is 
+      defined for each scenario. If a scenario doesn't have this tag, no browser will be launched for the scenario.
+      
+      <p>Available annotations:
+      <ul>
+        <li>@firefox</li>
+        <li>@ie</li>
+        <li>@phantomjs</li>
+        <li>@htmlunit</li>
+      </ul>
+
+      <p>Scenario defines a portion of the test. In Cucumber, they
+        are isolated, and do not chain from one scenario to another.
+      
+      <p>Given/When/Then are the steps and describe what to test.
+        The match directly with annotated methods.
+      
+      <p>
+        Specifics on the cucumber syntax, called Gherkin, can be found
+        on their <a
+          href="https://github.com/cucumber/cucumber/wiki/Gherkin">wiki
+          page</a>.
+    </div>
+    <div role="tabpanel" class="tab-pane fade junit" >
+      <p>In JUnit, these set of instructions are regular java JUnit
+        tests, calling step methods. A sample JUnit test looks similar
+        to this:<pre class="prettyprint">
+@RunWith(SeAuto.class)
+public class BingTest
+{
+
+  @Inject
+  private SearchSteps searchSteps;
+  
+  @Test
+  @Firefox
+  public void searchBingWithFirefox()
+  {
+    searchSteps.givenIAmOnBingsHomePage();
+    searchSteps.whenIsearchForPhrase("Partnet");
+    searchSteps.thenIWillSeePartnetInResults();
+  }
+}
+      </pre>
+      <p>The JUnit test will be extremely familiar for anyone who has dealt with them before.
+      <p>The tests need to be run with the SeAuto.class, steps need to be injected into the test, and
+      a test method needs to be annotated with what browser one would like to use to test with.
+      
+      <p>Available browser annotations:
+      <ul>
+        <li><code>@Firefox</code></li>
+        <li><code>@IE</code></li>
+        <li><code>@PhantomJs</code></li>
+        <li><code>@HTMLUnit</code></li>
+      </ul>
+      <p>Other then that, they are just like regular unit tests. Each test is isolated, and should be written to be
+      executed in any order.
+    </div>
+  </div>
+</div>
+
+
+
+<h3>Match Steps</h3>
+<div ui-view="stepExamples@createTests"></div>
+
+<h3>Create Page Objects</h3>
+<p>Page objects represent a single page in an application. They work
+  directly with the page to manipulate fields and click buttons. They are built independent of what
+  testing tool is being used.
+<p>More information on page objects can be found <a ui-sref="pageObjects({scrollTo: '#header'})">here</a>.
+An example page object is shown below
+    <div ui-view="pageExamples"></div> 
+

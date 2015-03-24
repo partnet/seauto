@@ -1,0 +1,19 @@
+<title>Site Objects</title>
+
+<h2>Site Objects</h2>
+
+<p>
+  Site objects represent the site under test. Site objects provide
+  functionality that should be accessible from basically everywhere
+  within the application being tested as well as some basic web browser
+  functionality (i.e. refresh page, open url, etc). Site objects also
+  provide access to SitePanels. The Site object abstract base class is
+  <code>com.partnet.automation.page.Site</code>.
+<h3>SitePanel objects</h3>
+
+<p>
+  Similar to a regular <a ui-sref="pageObjects({scrollTo : '#panel-objects'})">Panel</a>
+  except with a broader scope. SitePanels are accessible from most every
+  page (e.g. header, footer, etc..). Very few SitePanels should be
+  defined. Access to SitePanels should be through the methods on the
+  Site object rather than obtained generically like Pages and Panels.

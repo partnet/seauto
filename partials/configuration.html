@@ -1,0 +1,102 @@
+<title>Configuration</title>
+
+<h2>Runtime Properties</h2>
+
+<p>The runtime properties will be looked for in the properties file.
+It is located in the <code>src/test/resources</code> folder. Here is where several 
+default properties can be stored.
+<p>All of these properties can also be passed in though the command line as follows:
+<p><code>mvn integration-test -Dtest.config.browser=firefox -Dtest.config.url=http://www.bing.com</code>
+<pre class="prettyprint">
+# ------------------------------------------------------
+# Configuration Properties for Automated Testing
+# ------------------------------------------------------
+
+###########
+#Overrides the browser being used for all tests, regardless how the test is tagged
+###########
+#test.config.browser=firefox
+
+###########
+#URL of the website being tested
+###########
+test.config.url=http://www.bing.com
+
+
+###########
+#Selenium grid's remote url. Enable this and point it to a grid to run
+# browsers on the remote grid.
+###########
+#test.config.selenium.url=http://&lt;grid-ip&gt;:4444/wd/hub
+
+####################################
+# Driver Binary locations. 
+#
+# Note: each test.config.driver.<driver>.bin can be appended with .windows, .mac, and .path 
+#   to allow someone to specify their own locations/bins for each driver.
+#
+# If you would like to use default settings, run the following maven command to 
+#   download the driver binaries:
+# mvn com.partnet:seauto-driver-manager:download
+#
+####################################
+#IE driver
+#test.config.driver.ie.bin=IEDriverServer.exe
+
+#PhantomJs driver
+#test.config.driver.phantomjs.bin=phantomjs
+#test.config.driver.phantomjs.bin.path=/path/to/phantomjs
+#test.config.driver.phantomjs.bin.windows=phantomjs.exe
+
+#Chrome driver
+#test.config.driver.chrome.bin=chromedriver
+#test.config.driver.chrome.bin.windows=chromedriver.exe
+</pre>
+
+<div ui-view="configPkg@configuration"></div>
+
+
+<h3 id="parallel">Running tests in Parallel</h3>
+<p>
+  Essential to any Selenium testing framework is being able to run the tests in
+  parallel. For JBehave, JUnit, and Cucumber-JVM sample projects, passing in the property
+  <code>-Dtest.config.threads=3</code> when running the maven command
+  will run the tests on three different threads. It is that simple to start off with.
+<p>
+  <b>Note: </b>JUnit, by default will run each annotated
+  <code>@Test</code> method in its own thread. JBehave will run each story in
+  its own thread, not each scenario. Cucumer-JVM requires additional work for its threading, continue reading.
+  
+
+<p>Cucumber-JVM needs additional work to ensure all tests are
+  running in parallel. Their framework is not thread safe, and requires
+  a separate JVM for each thread to run the tests in parallel. The tests
+  must be manually split into different running threads. Use caution
+  when doing this, as a valid test could easily be misplaced and
+  skipped. However, if the time is taken to chart out the longer tests,
+  they can be matched with shorter tests to produce a slightly shorter
+  run time.
+<p>
+  Cucumber uses the JUnit framework to launch the tests. In the sample
+  project, you will find two example runners to demonstrate the two parallel
+  tests, called
+  <code>CucumberRunner.java</code> and <code>Thread1.java</code> 
+  classes. Each additional thread will require another class similar to
+  the CucumberRunner.java and some modifications to the pom file.
+<p>
+  In each example runner, you will find the class is annotated with
+  something similar to
+  <code>@CucumberOptions(features = {"classpath:features/bing"})</code>
+  . This is how the tests are split up into their own threads. In
+  <code>Thread1.java</code>, you will find that its feature option is pointing to the
+  threadExamples folder. In doing this, all of the features in the
+  <code>bing</code>
+  folder will be run in one fork of the jvm ran by <code>CucumberRunner.java</code>, and everything in the
+  <code>threadExamples</code>
+  folder will be run in a second fork of the jvm run by <code>Thread1.java</code>. These forks are created in the
+  pom.xml file, utilizing the maven surefire plugin.
+  
+  <br/>
+  <br/>
+  <br/>
+  <br/>
