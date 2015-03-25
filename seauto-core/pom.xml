@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.partnet</groupId>
     <artifactId>seauto</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.9.0</version>
   </parent>
   <artifactId>seauto-core</artifactId>
   <packaging>jar</packaging>
