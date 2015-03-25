@@ -1,0 +1,106 @@
+<title>Get Started</title>
+
+<h2>Get Started</h2>
+
+<p>It is highly recommended to clone one of the existing sample projects, or run one of the archetypes to 
+create the initial base framework using the automation tool you'd like. If there is not a sample
+project using your preferred testing tool, feel free to send a request or provide your own implementation. 
+If you do port SeAuto to another test framework, please send us a sample project so others can use it.
+
+Currently there are three sample projects to choose from:
+<ul>
+  <li><a href="">JBehave</a></li>
+  <li><a href="">Cucumber</a></li>
+  <li><a href="">JUnit</a></li>
+</ul>
+Simply clone the project, and follow the instructions in the readme to run the tests.
+
+To start creating the tests, take a look at <a ui-sref="createTests">Create Tests</a>.
+
+<h2>Which Testing Tool Should I Use?</h2>
+<p>
+  There are several choices, which allow a company or a person to pick the tool that
+  fits their needs. Here is a brief overview of what each framework
+  provides
+
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>JBehave</th>
+      <th>Cucumber</th>
+      <th>JUnit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>One browser launched per story</b>
+      <p>JBehave launches a single browser for the entire story (although it is possible to launch a browser per test),
+      It is not possible to do this with JUnit or Cucumber, because of how they are written. This can save
+      time, but don't allow each scenario to be run independently from each other
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-danger"></td>
+      <td class="alert-danger"></td>
+    </tr>
+    <tr>
+      <td><b>Different browser per test</b>
+      <p>This allows a company to be more resourceful with it's resources. For example: running simple tests
+      with headless browsers.
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-success"></td>
+      <td class="alert-success"></td>
+    </tr>
+    <tr>
+      <td><b>Run tests in parallel</b>
+      <p>This should be a general rule for developing automated tests
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-warning">see <a ui-sref="configuration({scrollTo: '#parallel'})">Running tests in Parallel</a></td>
+      <td class="alert-success"></td>
+    </tr>
+    <tr>
+      <td><b>Restart test if failure occurs failure</b>
+      <p>Anything from slow server response times to network latency can cause a test to fail.
+      This prevents those cancerous false positives and report real failures.
+      </td>
+      <td class="alert-warning"><a href="https://jira.codehaus.org/browse/JBEHAVE-1053">JBEHAVE-1053</a></td>
+      <td class="alert-success"></td>
+      <td class="alert-success"></td>
+    </tr>
+    <tr>
+      <td><b>Plain text DSL (Domain Specific Language)</b>
+      <p>Steps defined in plain text to allow non-coders to understand what is being tested
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-success"></td>
+      <td class="alert-danger"></td>
+    </tr>
+    <tr>
+      <td><b>Provides neat HTML by default</b>
+      <p>From cloning one of the sample project and running the tests, are html reports produced?
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-warning"><code>TODO</code></td>
+      <td class="alert-danger"></td>
+    </tr>
+    <tr>
+      <td><b>Screenshots on failure</b>
+      <p>Reports 
+      </td>
+      <td class="alert-success"></td>
+      <td class="alert-warning"><code>TODO</code></td>
+      <td class="alert-warning">After every test</td>
+    </tr>
+    <!-- 
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr> 
+    -->
+  </tbody>
+</table>
