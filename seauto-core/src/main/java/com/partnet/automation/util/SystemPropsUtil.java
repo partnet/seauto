@@ -36,9 +36,9 @@ public class SystemPropsUtil
 
   /**
    * Load properties from the given configuration file name.
-   * <p/>
+   * <p>
    * Given error message is displayed if file not found.
-   * <p/>
+   * <p>
    * 
    * @param configFileName
    *          - File name of properties file.

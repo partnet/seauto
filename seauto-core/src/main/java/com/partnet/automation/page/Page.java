@@ -75,18 +75,19 @@ public abstract class Page
   /**
    * Verifies that the Page object used in a step class represents the current
    * browser page.
-   * <p/>
+   * <p>
    * This method is called whenever a new page object is requested. It can also
    * be called manually. Implementations should call the other verify methods
    * such as:
-   * <li>{@link #verifyByTitle(String)}
-   * <li>{@link #verifyBySelector(By)}
-   * <li>{@link #verifyByWebElement(WebElement)}
-   * <p/>
+   * <ul>
+   *   <li>{@link #verifyByTitle(String)}</li>
+   *   <li>{@link #verifyBySelector(By)}</li>
+   *   <li>{@link #verifyByWebElement(WebElement)}</li>
+   * </ul>
+   * <p>
    * For example, when the page title is dynamic, another element on the page
    * other than title may be used that provides a consistent value.
    * 
-   * @return void
    * @throws IllegalStateException
    *           - thrown if the page could not be verified
    */
@@ -99,10 +100,9 @@ public abstract class Page
    *
    * @param title
    *          - expected page title
-   * @return void
    * @throws IllegalStateException
    *           - thrown if the page could not be verified
-   * @see {@link #verify()}
+   * @see #verify()
    */
   protected final void verifyByTitle(String title)
       throws IllegalStateException
@@ -116,7 +116,7 @@ public abstract class Page
    * Verifies existence of an element on the browser page using
    * <code>WebDriver.By</code> as defined by the Page object used in a step
    * class.
-   * <p/>
+   * <p>
    * All <code>WebDriver.By</code> searches are valid including: id, css,
    * linkText, name, etc.
    * 
@@ -124,7 +124,7 @@ public abstract class Page
    *          - locator to use to locate expected page element
    * @throws IllegalStateException
    *           - thrown if the page could not be verified
-   * @see {@link #verify()}
+   * @see #verify()
    */
   protected final void verifyBySelector(By by)
       throws IllegalStateException
@@ -137,7 +137,7 @@ public abstract class Page
   /**
    * Verifies existence of an element on the browser page using
    * <code>WebElement.isDisplayed()</code>.
-   * <p/>
+   * <p>
    * All <code>WebDriver.By</code> searches are valid including: id, css,
    * linkText, name, etc.
    * 
@@ -145,7 +145,7 @@ public abstract class Page
    *          - expected element to be found on the page
    * @throws IllegalStateException
    *           - thrown if the page could not be verified
-   * @see {@link #verify()}
+   * @see #verify()
    */
   protected final void verifyByWebElement(WebElement element)
       throws IllegalStateException
@@ -160,12 +160,12 @@ public abstract class Page
 
   /**
    * Initializes page for use in client code (i.e. step classes).
-   * <p/>
+   * <p>
    * Implicitly verifies page and assures it is in a ready state. Intended to be
    * called only by the testing framework (i.e. {@link PageProvider}.
-   * <p/>
+   * <p>
    * Override {@link #ready()} and {@link #verify()} for page specific behavior.
-   * <p/>
+   * <p>
    * 
    * @throws IllegalStateException
    */
@@ -178,10 +178,10 @@ public abstract class Page
 
   /**
    * Defines state of page when it is ready for interaction.
-   * <p/>
+   * <p>
    * Override this method in child page classes for pages with complex load
    * processes (e.g. AJAX callbacks, pagination framework use)
-   * <p/>
+   * <p>
    * Use one of the <code>wait</code> methods to cause the web driver to poll
    * until the page is ready to be used.
    */

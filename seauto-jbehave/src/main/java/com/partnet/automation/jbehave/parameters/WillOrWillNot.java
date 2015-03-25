@@ -17,7 +17,7 @@
 package com.partnet.automation.jbehave.parameters;
 
 /**
- * @see {@link StoryParameter}
+ * @see StoryParameter
  * @author fpedroza
  * @since Jun 13, 2014
  */
@@ -36,7 +36,7 @@ public enum WillOrWillNot
   /**
    * Converts the given value to a boolean (if possible)
    * 
-   * @see {@link #toBoolean()}
+   * @see #toBoolean()
    */
   public static boolean toBoolean(String value)
   {

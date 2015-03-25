@@ -68,7 +68,7 @@ public class PathUtils
   }
 
   /**
-   * Gets the path to /<project_dir>/src/test/resources/stories
+   * Gets the path to /&lt;project_dir&gt;/src/test/resources/stories
    */
   public static Path getStoriesPath()
   {
@@ -76,7 +76,7 @@ public class PathUtils
   }
 
   /**
-   * Gets the path to /<project_dir>
+   * Gets the path to /&lt;project_dir&gt;
    */
   public static Path getProjectPath()
   {
@@ -84,7 +84,7 @@ public class PathUtils
   }
 
   /**
-   * Gets the path to /<project_dir>/src/test
+   * Gets the path to /&lt;project_dir&gt;/src/test
    */
   private static Path getTestPath()
   {
@@ -92,7 +92,7 @@ public class PathUtils
   }
 
   /**
-   * Gets the path to /<project_dir>/resources/
+   * Gets the path to /&lt;project_dir&gt;/resources/
    */
   public static Path getBaseResourcesPath()
   {
@@ -126,8 +126,6 @@ public class PathUtils
      * Appends folders to the given {@link StringBuilder}. Each folder given is
      * appended with a file separator afterwards
      * 
-     * @param sb
-     *          - StringBuilder used to create the path
      * @param folders
      *          folders to append
      */

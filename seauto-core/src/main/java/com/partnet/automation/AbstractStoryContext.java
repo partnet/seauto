@@ -100,7 +100,7 @@ abstract public class AbstractStoryContext
    * 
    * @param key
    *          the key of the value to lookup
-   * @see {@link #getVariable(Object)} is preferred unless necessary
+   * @see #getVariable(Object) is preferred unless necessary
    */
   public Object getVariableAllowNull(Object key)
   {

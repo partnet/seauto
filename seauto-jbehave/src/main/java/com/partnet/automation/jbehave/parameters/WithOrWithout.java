@@ -17,7 +17,7 @@
 package com.partnet.automation.jbehave.parameters;
 
 /**
- * @see {@link StoryParameter}
+ * @see StoryParameter
  * @author fpedroza
  * @since Jun 13, 2014
  */

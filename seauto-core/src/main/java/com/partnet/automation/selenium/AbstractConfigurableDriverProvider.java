@@ -197,7 +197,7 @@ public abstract class AbstractConfigurableDriverProvider
   }
 
   /**
-   * @see {@link #launch(Browser)}
+   * @see #launch(Browser)
    */
   @Override
   public void launch()
@@ -213,7 +213,7 @@ public abstract class AbstractConfigurableDriverProvider
    *          - The browser to use, unless a higher priority browser as defined
    *          by {@link #getBrowserFromProperty()} is set.
    * 
-   * @see {@link #getDefaultBrowser()}
+   * @see #getDefaultBrowser()
    */
   public void launch(Browser browser)
   {
@@ -247,7 +247,7 @@ public abstract class AbstractConfigurableDriverProvider
    * given base url of the site so the page can be rendered when opened with a
    * browser.
    * 
-   * @param path
+   * @param htmlPath
    *          - path and filename of where to save the html file to.
    * @param baseUrl
    *          - replace relative path of html with this base url. If it is null
@@ -292,7 +292,7 @@ public abstract class AbstractConfigurableDriverProvider
    * @param baseUrl
    *          - used to transfer the cookies to the phantomjs driver properly.
    * 
-   * @see {@link #getPhantomJsWebDriver()}
+   * @see #getPhantomJsWebDriver()
    */
   public void saveScreenshotForHtmlUnit(String path, String baseUrl)
   {
@@ -367,7 +367,7 @@ public abstract class AbstractConfigurableDriverProvider
    * the current thread.
    * 
    * @return Browser, or null if a browser is not defined
-   * @see {@link #BROWSER_SYSTEM_PROPERTY_NAME}
+   * @see #BROWSER_SYSTEM_PROPERTY_NAME
    */
   protected Browser getBrowserFromProperty()
   {
@@ -379,7 +379,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Used to indicate whether or not a proxy should be used by default.
    * 
-   * @see {@link #USE_PROXY_BY_DEFAULT}
+   * @see #USE_PROXY_BY_DEFAULT
    */
   protected boolean useProxy()
   {
@@ -403,7 +403,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Get the value of the remote URL to connect to.
    * 
-   * @see {@link #SELENIUM_REMOTE_URL}
+   * @see #SELENIUM_REMOTE_URL
    */
   protected String getRemoteUrl()
   {
@@ -512,8 +512,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Best found default capabilities for Internet Explorer
    * 
-   * @param useProxy
-   * @return
+   * @return {@link DesiredCapabilities}
    */
   protected DesiredCapabilities getInternetExplorerCapabilities()
   {

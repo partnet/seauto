@@ -20,7 +20,7 @@ package com.partnet.automation.jbehave.parameters;
  * Used to represent something with visible text and a value. Often used as a
  * template to define a dropdown enum.
  * 
- * @see {@link StoryParameter}
+ * @see StoryParameter
  * @author bbarker
  * @author fpedroza
  */

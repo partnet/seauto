@@ -45,7 +45,7 @@ public abstract class SiteProvider<T extends Site>
   /**
    * Creates and initializes a {@link Site} instance to be used.
    * 
-   * @see {@link #newSiteInstance()}
+   * @see #newSiteInstance()
    */
   public T createSite()
   {

@@ -90,27 +90,27 @@ public abstract class HtmlView
   }
 
   /**
-   * <p/>
+   * <p>
    * This method simply clicks and waits for the page to load.
    *
-   * <p/>
+   * <p>
    * It is required for Internet Explorer to wait when clicking an element that
    * causes the page to reload/refresh; see <a href=
    * "http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#click%28%29"
    * >WebElement.click()</a>.
    *
-   * <p/>
+   * <p>
    * The IE web driver attempts to use native events, which would explain having
    * to explicitly wait for the page to load <a
    * href="http://code.google.com/p/selenium/wiki/InternetExplorerDriver"
    * >InternetExplorerDriver wiki</a>.
    *
-   * <p/>
+   * <p>
    * There is a way to turn off native events (and has been turned off for a
    * long time now). However, in my testing it appears it still does not wait
    * for the page to load when a click function has a new page loaded.
    *
-   * <p/>
+   * <p>
    * I am not sure of a way around this fix. Wait for page to load is required
    * for IE to work properly if the element being interacted with causes a new
    * page to be loaded.
@@ -192,7 +192,7 @@ public abstract class HtmlView
   /**
    * Selects the option in the given field based on the given visible text and
    * then waits for the page to load.
-   * <p/>
+   * <p>
    * This method should be used for interacting with a Select field that causes,
    * <b><i>EITHER</i></b> a <b>new page</b> is navigated to <b><i>OR</i></b> the
    * current page is <b>reloaded</b>.
@@ -219,7 +219,7 @@ public abstract class HtmlView
   /**
    * Helper method to select a option based on the visible text in the given
    * select element
-   * <p/>
+   * <p>
    * 
    * @param webElement
    *          - the element for the given select/dropdown field
@@ -239,12 +239,12 @@ public abstract class HtmlView
   /**
    * Helper method to select a option based on the value in the given select
    * element
-   * <p/>
+   * <p>
    * 
    * @param webElement
    *          - the element for the given select/dropdown field
-   * @param visibleText
-   *          - the visible text to be selected
+   * @param value
+   *          - the value to be selected
    * @return The {@link HtmlView} instance that invoked this method; enables
    *         fluent calls
    */
@@ -307,12 +307,12 @@ public abstract class HtmlView
   /**
    * An expectation for checking that there is at least one element present on a
    * web page.
-   * <p/>
+   * <p>
    * Use when more that one WebElement could be returned.
    * 
    * @param by
    * @param maxWaitInSeconds
-   * @return List<WebElement>
+   * @return {@link List} of {@link WebElement}
    */
   protected List<WebElement> waitForPresenceOfAllElements(By by, int maxWaitInSeconds)
   {
@@ -322,9 +322,9 @@ public abstract class HtmlView
   /**
    * Waits for element to be visible (in view area of browser) and able to be
    * clickable (by a user).
-   * <p/>
+   * <p>
    * Returns the <code>WebElement</code> of interest.
-   * <p/>
+   * <p>
    * See also
    * {@link com.partnet.automation.HtmlView#waitForElementToBeClickable(WebElement, int)}.
    * 
@@ -340,12 +340,12 @@ public abstract class HtmlView
   /**
    * Waits for the specified {@link ExpectedCondition} to occur in the page
    * until the max time has passed.
-   * <p/>
+   * <p>
    * Preferably use the {@link ExpectedConditions} static methods to return the
    * desired <code>ExpectedCondition</code> instance. Note that this method is
    * used for <code>ExpectedConditions</code> static methods that return a
    * {@link WebElement} object.
-   * <p/>
+   * <p>
    * Example:
    * 
    * <pre>
@@ -360,10 +360,10 @@ public abstract class HtmlView
    *   return waitForExpectedCondition(ExpectedConditions.elementToBeClickable(addTransactionBtn), MAX_WAIT_IN_SECONDS);
    * }
    * </pre>
-   * <p/>
+   * <p>
    * See also
    * {@link com.partnet.automation.HtmlView#waitForElementToBeClickable(WebElement, int)}.
-   * <p/>
+   * <p>
    * 
    * @param condition
    *          - the {@link ExpectedCondition} instance that defines the
@@ -382,12 +382,12 @@ public abstract class HtmlView
   /**
    * Waits for the specified {@link ExpectedCondition} to occur in the page
    * until the max time has passed.
-   * <p/>
+   * <p>
    * Preferably use the {@link ExpectedConditions} static methods to return the
    * desired <code>ExpectedCondition</code> instance. Note that this method is
    * used for <code>ExpectedConditions</code> static methods that return a
    * {@link Boolean} object.
-   * <p/>
+   * <p>
    * Example:
    * 
    * <pre>
@@ -404,10 +404,10 @@ public abstract class HtmlView
    *   return waitForExpectedConditionBoolean(ExpectedConditions.textToBePresentInElement(selectDropDownBox, optionText), MAX_WAIT_IN_SECONDS);
    * }
    * </pre>
-   * <p/>
+   * <p>
    * See also
    * {@link com.partnet.automation.HtmlView#waitForElementToBeClickable(WebElement, int)}.
-   * <p/>
+   * <p>
    * 
    * @param condition
    *          - the {@link ExpectedCondition} instance that defines the
@@ -424,7 +424,7 @@ public abstract class HtmlView
 
   /**
    * Clicks element and Accepts the alert that follows. This handles the case of
-   * a real browser vs the PhantomJs alert strategy. <br/>
+   * a real browser vs the PhantomJs alert strategy. <br>
    * <a href="https://github.com/detro/ghostdriver/issues/20">related info</a>
    * 
    * @param elm
@@ -438,7 +438,7 @@ public abstract class HtmlView
 
   /**
    * Clicks element and dismisses the alert that follows. This handles the case
-   * of a real browser vs the PhantomJs alert strategy. <br/>
+   * of a real browser vs the PhantomJs alert strategy. <br>
    * <a href="https://github.com/detro/ghostdriver/issues/20">related info</a>
    * 
    * @param elm
@@ -641,7 +641,7 @@ public abstract class HtmlView
    * loaded. This also waits for the "Please Wait" overlay to disappear if
    * present.
    * 
-   * @see {@link #waitForPageToLoad(boolean)}
+   * @see #waitForPageToLoad(boolean)
    */
   protected void waitForPageToLoad()
   {
@@ -652,8 +652,6 @@ public abstract class HtmlView
   /**
    * Waits for a page to load; a set amount of time is allotted.
    * 
-   * @param driver
-   *          - the {@link WebDriver} to use
    * @param ignoreWebDriverException
    *          - whether or not a {@link WebDriverException} should be ignored.
    *          In certain cases, it can be useful to not ignore exceptions thrown
@@ -683,7 +681,7 @@ public abstract class HtmlView
    * @param optionalPageTitle
    *          - the expected page title of the window to switch to - set to
    *          <code>null</code> to ignore
-   * @see {@link #switchToWindow(WebElement, By, String, boolean)}
+   * @see #switchToWindow(WebElement, By, String, boolean)
    */
   protected void switchToNewWindow(By locator, String optionalPageTitle)
       throws IllegalStateException, TimeoutException
@@ -701,7 +699,7 @@ public abstract class HtmlView
    * @param optionalPageTitle
    *          - the expected page title of the window to switch to - set to
    *          <code>null</code> to ignore
-   * @see {@link #switchToWindow(WebElement, By, String, boolean)}
+   * @see #switchToWindow(WebElement, By, String, boolean)
    */
   protected void switchToOpenWindow(By locator, String optionalPageTitle)
       throws IllegalStateException, TimeoutException
@@ -719,7 +717,7 @@ public abstract class HtmlView
    * @param optionalPageTitle
    *          - the expected page title of the window to switch to - set to
    *          <code>null</code> to ignore
-   * @see {@link #switchToWindow(WebElement, By, String, boolean)}
+   * @see #switchToWindow(WebElement, By, String, boolean)
    */
   protected void switchToNewWindow(WebElement element, String optionalPageTitle)
       throws IllegalStateException, TimeoutException
@@ -738,7 +736,7 @@ public abstract class HtmlView
    * @param optionalPageTitle
    *          - the expected page title of the window to switch to - set to
    *          <code>null</code> to ignore
-   * @see {@link #switchToWindow(WebElement, By, String, boolean)}
+   * @see #switchToWindow(WebElement, By, String, boolean) switchToWindow
    */
   protected void switchToOpenWindow(WebElement element, String optionalPageTitle)
       throws IllegalStateException, TimeoutException
@@ -912,7 +910,7 @@ public abstract class HtmlView
   /**
    * Trigger the <code>focus</code> javascript event on a element.
    * 
-   * @see {@link #focusOrBlur(WebElement, WebDriver, boolean)}
+   * @see #focusOrBlur(WebElement, WebDriver, boolean)
    */
   protected void focusElement(WebElement triggerElm)
   {
@@ -923,7 +921,7 @@ public abstract class HtmlView
    * Trigger the <code>blur</code> javascript event on a element. (removes focus
    * from the element)
    * 
-   * @see {@link #focusOrBlur(WebElement, WebDriver, boolean)}
+   * @see #focusOrBlur(WebElement, WebDriver, boolean)
    */
   protected void blurElement(WebElement triggerElm)
   {

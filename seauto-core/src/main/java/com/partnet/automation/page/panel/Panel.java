@@ -19,6 +19,7 @@ package com.partnet.automation.page.panel;
 import org.openqa.selenium.WebDriver;
 
 import com.partnet.automation.HtmlView;
+import com.partnet.automation.page.Page;
 
 /**
  * Base panel object. Only purpose is to provide a common constructor for
@@ -26,10 +27,10 @@ import com.partnet.automation.HtmlView;
  * 
  * A panel represents part of a web page. Panels provide the following benefits:
  * <ul>
- * <li>Reusable page interactions. Following the DRY principle.
- * <li>Reusable page element locators.
- * <li>Panels are different than {@link Page} objects. Unlike Pages, Panels may
- * provide WebElement access.
+ *   <li>Reusable page interactions. Following the DRY principle.</li>
+ *   <li>Reusable page element locators.</li>
+ *   <li>Panels are different than {@link Page} objects. Unlike Pages, Panels may
+ * provide WebElement access.</li>
  * </ul>
  * 
  * @author <a href="mailto:rbascom@part.net">rbascom</a>

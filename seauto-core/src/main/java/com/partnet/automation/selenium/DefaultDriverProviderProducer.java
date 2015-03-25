@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Responsible for providing a {@link WebDriverProvider}.
+ * Responsible for providing a {@link DriverProvider}.
  *
  * @author <a href="mailto:rbascom@part.net">Ryan Bascom</a>
  */

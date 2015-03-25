@@ -49,7 +49,7 @@ public class PageProvider
    * @param clazz
    *          type of Page requested
    * @return Page of the specified type
-   * @see {@link Page#initialize()}
+   * @see Page#initialize()
    */
   public <T extends Page> T get(final Class<T> clazz)
   {
@@ -75,7 +75,7 @@ public class PageProvider
   }
 
   /**
-   * @see {@link #initializeDependencies()}
+   * @see #initializeDependencies()
    */
   private <T extends Page> T createPage(Class<T> pageClass)
   {

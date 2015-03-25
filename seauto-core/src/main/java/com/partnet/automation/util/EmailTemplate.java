@@ -49,7 +49,7 @@ public abstract class EmailTemplate
    * @param templateFileName
    *          name of the Freemarker template file to be used; must exist under
    *          the stories directory.
-   * @see {@link PathUtils#getStoriesPath()}
+   * @see PathUtils#getStoriesPath()
    */
   public EmailTemplate(String templateFileName)
   {

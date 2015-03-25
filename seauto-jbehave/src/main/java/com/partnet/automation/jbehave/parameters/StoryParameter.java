@@ -23,7 +23,7 @@ package com.partnet.automation.jbehave.parameters;
  * 
  * @author fpedroza
  * @since Jun 13, 2014
- * @see {@link StoryParameterFactory#valueOf(Class, String)}
+ * @see StoryParameterFactory#valueOf(Class, String)
  */
 public interface StoryParameter
 {

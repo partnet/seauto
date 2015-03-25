@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * A Context & Dependency Injection qualifier to indicate the same instance of
+ * A Context and Dependency Injection qualifier to indicate the same instance of
  * an class is used during the complete story.
  * 
  * @author <a href="mailto:rbascom@part.net">rbascom</a>
