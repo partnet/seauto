@@ -8,8 +8,9 @@
   </parent>
   <artifactId>seauto-core</artifactId>
   <packaging>jar</packaging>
+  <name>seauto-core</name>
+  
   <properties>
-
     <!-- Selenium Properties -->
     <!-- We are stuck with this version of selenium (2.43.1) because of https://github.com/detro/ghostdriver/issues/397 -->
     <seleniumhq.selenium-server.version>2.45.0</seleniumhq.selenium-server.version>

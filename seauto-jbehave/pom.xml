@@ -7,8 +7,9 @@
   </parent>
   <artifactId>seauto-jbehave</artifactId>
   <packaging>jar</packaging>
+  <name>seauto-jbehave</name>
+
   <properties>
-  
     <!-- JBehave Properties -->
     <jbehave.jbehave-core.version>3.9.5</jbehave.jbehave-core.version>
     <jbehave.jbehave-weld.version>3.9.5</jbehave.jbehave-weld.version>

@@ -8,7 +8,8 @@
   </parent>
   <artifactId>seauto-cucumber</artifactId>
   <packaging>jar</packaging>
-
+  <name>seauto-cucumber</name>
+  
   <dependencies>
     <dependency>
       <groupId>com.partnet</groupId>

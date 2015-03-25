@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import com.partnet.automation.Browser;
 import com.partnet.junit.SeAuto;
 import com.partnet.junit.annotations.browser.HTMLUnit;
-import com.partnet.step.TestSteps;
+import com.partnet.step.BrowserSteps;
 
 /**
  * @author <a href="mailto:bbarker@part.net">bbarker</a>
@@ -34,7 +34,7 @@ public class TestBasicRunner
 {
 
   @Inject
-  private TestSteps testStep;
+  private BrowserSteps testStep;
 
   @Test
   @HTMLUnit

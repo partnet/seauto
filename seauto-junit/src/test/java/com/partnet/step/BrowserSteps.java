@@ -27,7 +27,7 @@ import com.partnet.page.DummyPage;
 /**
  * @author <a href="mailto:bbarker@part.net">bbarker</a>
  */
-public class TestSteps
+public class BrowserSteps
 {
 
   @Inject

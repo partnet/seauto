@@ -8,7 +8,7 @@
   </parent>
   <artifactId>seauto-driver-manager</artifactId>
   <packaging>maven-plugin</packaging>
-  
+
   <name>seauto-driver-manager</name>
   <description>SeAuto Driver Manager</description>
 
@@ -41,6 +41,23 @@
           <source>1.7</source>
           <target>1.7</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.4</version>
+        <configuration>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

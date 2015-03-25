@@ -29,7 +29,7 @@ import com.partnet.automation.page.Page;
 /**
  * @author <a href="mailto:bbarker@part.net">bbarker</a>
  */
-public class TestHtmlPage
+public class HtmlTestPage
     extends Page
 {
 
@@ -48,7 +48,7 @@ public class TestHtmlPage
   @FindBy(id = "jsonAjaxButton")
   private WebElement jsonAjaxBtn;
 
-  public TestHtmlPage(DependencyContainer depContainer)
+  public HtmlTestPage(DependencyContainer depContainer)
   {
     super(depContainer);
   }
@@ -82,7 +82,7 @@ public class TestHtmlPage
     webDriver.get(htmlPath.toString());
   }
 
-  public TestHtmlPage setInfoBox(String value)
+  public HtmlTestPage setInfoBox(String value)
   {
     setValue(infoTextBox, value);
     return this;
@@ -93,13 +93,13 @@ public class TestHtmlPage
     return infoTextBox.getAttribute("value");
   }
 
-  public TestHtmlPage selectManufactOptionByVisibleText(String visibleText)
+  public HtmlTestPage selectManufactOptionByVisibleText(String visibleText)
   {
     selectByVisibleText(manufactDropdown, visibleText);
     return this;
   }
 
-  public TestHtmlPage selectManufactOptionByValue(String value)
+  public HtmlTestPage selectManufactOptionByValue(String value)
   {
     selectByValue(manufactDropdown, value);
     return this;
