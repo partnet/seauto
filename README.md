@@ -34,7 +34,7 @@ mvn archetype:generate -Dfilter=seauto
 
 To run the tests, change your directory into the newly created sample project and run 
 ```bash
-mvn mvn clean integration-test
+mvn clean integration-test
 ```
 
 For more information, take a look at the individual projects:
