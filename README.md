@@ -24,6 +24,24 @@ the past several years.
 * Support for a unique browser per test to utilize resources more efficiently
 * Drop-in, ready to start creating tests
 
+Get Started
+------
+The easiest way to get started with SeAuto is by using one of the sample project templates. Simply run this one command, select your favorite test automation framework, fill in group/artifact info, and then run the tests!
+Be sure to have Apache Maven and Firefox installed before creating the sample projects and running the tests.
+```bash
+mvn archetype:generate -Dfilter=seauto
+```
+
+To run the tests, change your directory into the newly created sample project and run 
+```bash
+mvn mvn clean integration-test
+```
+
+For more information, take a look at the individual projects:
+* [SeAuto JBehave Sample](https://github.com/partnet/seauto-jbehave-sample)
+* [SeAuto JUnit Sample](https://github.com/partnet/seauto-junit-sample)
+* [SeAuto Cucumber Sample](https://github.com/partnet/seauto-cucumber-sample)
+
 Information
 ------
 
