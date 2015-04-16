@@ -42,7 +42,7 @@ public class TestSite
   {
     System.setProperty(URL_SYS_PROP_NAME, TEST_URL);
     context.site().open();
-    Assert.assertEquals("test.config.url property isn't working correctly", 
+    Assert.assertEquals("test.config.url property isn't working correctly!", 
         TEST_URL, context.site().getCurrentPageUrl());
   }
   
