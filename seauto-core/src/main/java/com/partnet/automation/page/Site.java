@@ -40,7 +40,6 @@ public abstract class Site
 {
 
   private static final Logger LOG = LoggerFactory.getLogger(Site.class);
-
   private static final Pattern baseUrlPattern = Pattern.compile("((https?://)?(((\\.)?(\\w|-)?)+)(\\:\\d+)?)");
 
   public Site(WebDriver webDriver)
@@ -66,8 +65,7 @@ public abstract class Site
    */
   public void open()
   {
-    // final String defaultUrl = getDefaultUrl();
-    this.open("http://www.bing.com");
+    this.open(getDefaultUrl());
   }
 
   /**
