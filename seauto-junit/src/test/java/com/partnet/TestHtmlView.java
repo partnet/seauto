@@ -19,6 +19,7 @@ package com.partnet;
 import javax.inject.Inject;
 
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,13 @@ import com.partnet.page.HtmlTestPage;
 @RunWith(SeAuto.class)
 public class TestHtmlView
 {
+  private static final String WAIT_FOR_PAGE_PROP = "test.config.page.load.timeout";
+  
+  @After
+  public void teardown()
+  {
+    System.clearProperty(WAIT_FOR_PAGE_PROP);
+  }
 
   @Inject
   PageProvider pageProvider;
@@ -136,6 +144,14 @@ public class TestHtmlView
   {
     pageProvider.get(HtmlTestPage.class).clickReloadBtnAndWait();
     ensureDriverStillResponding();
+  }
+  
+  @Test(expected = NumberFormatException.class)
+  @HTMLUnit
+  public void test_pageReloadError()
+  {
+    System.setProperty(WAIT_FOR_PAGE_PROP, "90abc");
+    pageProvider.get(HtmlTestPage.class).clickReloadBtnAndWait();
   }
   
   private void ensureDriverStillResponding()
