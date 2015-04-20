@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 
 import com.partnet.automation.page.PageProvider;
 import com.partnet.junit.SeAuto;
+import com.partnet.junit.annotations.browser.HTMLUnit;
 import com.partnet.junit.annotations.browser.PhantomJs;
 import com.partnet.page.HtmlTestPage;
 
@@ -127,6 +128,14 @@ public class TestHtmlView
     //ensure the driver is still working
     ensureDriverStillResponding();
     
+  }
+  
+  @Test
+  @PhantomJs
+  public void test_pageReload()
+  {
+    pageProvider.get(HtmlTestPage.class).clickReloadBtnAndWait();
+    ensureDriverStillResponding();
   }
   
   private void ensureDriverStillResponding()
