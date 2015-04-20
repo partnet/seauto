@@ -47,6 +47,9 @@ public class HtmlTestPage
 
   @FindBy(id = "jsonAjaxButton")
   private WebElement jsonAjaxBtn;
+  
+  @FindBy(id = "reloadPageBtn")
+  private WebElement reloadPageBtn;
 
   public HtmlTestPage(DependencyContainer depContainer)
   {
@@ -73,12 +76,11 @@ public class HtmlTestPage
   @Override
   public void ready()
   {
-    // typically this isn't the way to get to a site
+    // typically this isn't the way to get to a real site
     // however, for this basic test this is the way to accomplish this.
 
     URL htmlPath = TestHtmlView.class.getClassLoader().getResource("TestHtml.html");
-    // System.out.println(htmlPath.toString());
-    // webDriver.get("http://localhost/TestHtml.html");
+
     webDriver.get(htmlPath.toString());
   }
 
@@ -115,5 +117,9 @@ public class HtmlTestPage
     super.injectAjaxListener();
     jsonAjaxBtn.click();
     return super.waitForAjaxResponse("glossary");
+  }
+  
+  public void clickReloadBtnAndWait() {
+    super.clickAndWait(reloadPageBtn);
   }
 }
