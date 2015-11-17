@@ -8,3 +8,7 @@ release.properties
 .settings
 .classpath
 selenium-drivers/
+*.iml
+.settings
+.idea
+

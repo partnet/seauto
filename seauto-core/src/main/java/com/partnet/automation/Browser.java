@@ -16,6 +16,7 @@
 
 package com.partnet.automation;
 
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,7 +34,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public enum Browser
 {
-  CHROME, FIREFOX, IE, PHANTOMJS, HTMLUNIT, ;
+  CHROME, FIREFOX, IE, PHANTOMJS, HTMLUNIT, ANDROID;
 
   public boolean isInternetExplorer()
   {
@@ -53,6 +54,11 @@ public enum Browser
   public boolean isHeadless()
   {
     return (this == PHANTOMJS || this == HTMLUNIT);
+  }
+
+  public boolean isAndroid()
+  {
+    return this == ANDROID;
   }
 
   /**
@@ -97,26 +103,29 @@ public enum Browser
       return Browser.HTMLUNIT;
     }
 
-    if (driver instanceof RemoteWebDriver) {
-      RemoteWebDriver remoteDriver = (RemoteWebDriver) driver;
-      String browserName = remoteDriver.getCapabilities().getBrowserName().toLowerCase();
-      switch (browserName) {
-        case "chrome":
-          return Browser.CHROME;
-        case "internet explorer":
-          return Browser.IE;
-        case "firefox":
-          return Browser.FIREFOX;
-        case "phantomjs":
-          return Browser.PHANTOMJS;
-        case "htmlunit":
-          return Browser.HTMLUNIT;
-
-        default:
-          throw new IllegalArgumentException(String.format("Could not determine remote web browser name: '%s'", browserName));
-      }
+    if (!(driver instanceof RemoteWebDriver)) {
+      throw new IllegalArgumentException(String.format("Could not determine the browser type for '%s'", driver.getClass()));
     }
-    throw new IllegalArgumentException(String.format("Could not determine the browser type for '%s'", driver.getClass()));
+
+    RemoteWebDriver remoteDriver = (RemoteWebDriver) driver;
+    String browserName = remoteDriver.getCapabilities().getBrowserName().toLowerCase();
+    switch (browserName) {
+      case "chrome":
+        return Browser.CHROME;
+      case "internet explorer":
+        return Browser.IE;
+      case "firefox":
+        return Browser.FIREFOX;
+      case "phantomjs":
+        return Browser.PHANTOMJS;
+      case "htmlunit":
+        return Browser.HTMLUNIT;
+      case "android":
+        return Browser.ANDROID;
+
+      default:
+        throw new IllegalArgumentException(String.format("Could not determine remote web browser name: '%s'", browserName));
+    }
   }
 
 }

@@ -18,6 +18,7 @@ package com.partnet.junit;
 
 import java.lang.annotation.Annotation;
 
+import com.partnet.junit.annotations.browser.Android;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.runner.notification.RunNotifier;
@@ -70,9 +71,7 @@ public class SeAuto
   {
     DriverProvider driverProvider = weld.instance().select(DriverProvider.class).get();
 
-    boolean runBrowser = !super.isIgnored(method);
-
-    if (runBrowser) {
+    if (runWithBrowser(method)) {
       // prefer annotations of methods over class, but use class as a fallback.
       Browser browser = getBrowser(method.getAnnotations());
 
@@ -83,17 +82,45 @@ public class SeAuto
       driverProvider.launch(browser);
     }
 
-    super.runChild(method, notifier);
+    try {
+      super.runChild(method, notifier);
+    } finally {
+      //make sure the browser is killed
+      finalizeTest(method, driverProvider);
+    }
+  }
 
-    if (runBrowser) {
 
-      String screenshotPath = PathUtils.getProjectPath().appendFolders("target", "screenshot").appendFile(klass.getName() + "-" + method.getName() + ".png").toString();
-
-      log.debug("Screenshot saved to: {}", screenshotPath);
-      driverProvider.saveScreenshotAs(screenshotPath);
+  /**
+   * Finalizes the test by taking a screenshot, then killing the browser
+   * @param method
+   * @param driverProvider
+   */
+  private void finalizeTest(FrameworkMethod method, DriverProvider driverProvider)
+  {
+    if (runWithBrowser(method)) {
+      takeScreenshot(method, driverProvider);
+      log.debug("Ending browser for test " + getTestName(method));
       driverProvider.end();
     }
+  }
 
+  private void takeScreenshot(FrameworkMethod method, DriverProvider driverProvider)
+  {
+    String screenshotPath = PathUtils.getProjectPath().appendFolders("target", "screenshot")
+        .appendFile(getTestName(method) + ".png").toString();
+    log.debug("Screenshot saved to: {}", screenshotPath);
+    driverProvider.saveScreenshotAs(screenshotPath);
+  }
+
+  private String getTestName(FrameworkMethod method)
+  {
+    return klass.getName() + "-" + method.getName();
+  }
+
+  private boolean runWithBrowser(FrameworkMethod method)
+  {
+    return !super.isIgnored(method);
   }
 
   /**
@@ -107,15 +134,23 @@ public class SeAuto
 
     for (Annotation annot : annotations) {
 
-      if (annot.annotationType() == HTMLUnit.class) return Browser.HTMLUNIT;
-      else
-        if (annot.annotationType() == PhantomJs.class) return Browser.PHANTOMJS;
-        else
-          if (annot.annotationType() == Firefox.class) return Browser.FIREFOX;
-          else
-            if (annot.annotationType() == Chrome.class) return Browser.CHROME;
-            else
-              if (annot.annotationType() == IE.class) return Browser.IE;
+      if (annot.annotationType() == HTMLUnit.class)
+        return Browser.HTMLUNIT;
+
+      if (annot.annotationType() == PhantomJs.class)
+        return Browser.PHANTOMJS;
+
+      if (annot.annotationType() == Firefox.class)
+        return Browser.FIREFOX;
+
+      if (annot.annotationType() == Chrome.class)
+        return Browser.CHROME;
+
+      if (annot.annotationType() == IE.class)
+        return Browser.IE;
+
+      if (annot.annotationType() == Android.class)
+        return Browser.ANDROID;
     }
 
     return null;

@@ -128,7 +128,7 @@ public abstract class Site
    * 
    * @param relativeUrl
    *          - relative url to navigate to. Example:
-   *          <code>/acct/orders-admin/fpdsAwardConsole.action</code>
+   *          <code>/acct/orders</code>
    */
   public void openRelative(final String relativeUrl)
   {
