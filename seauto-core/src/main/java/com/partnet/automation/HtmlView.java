@@ -17,7 +17,6 @@
 package com.partnet.automation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,6 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -64,18 +62,16 @@ import com.google.common.base.Function;
  */
 public abstract class HtmlView
 {
-
   private static final Logger LOG = LoggerFactory.getLogger(HtmlView.class);
-
   private static final String JAVASCRIPT_AJAX_MESSAGE_ARRAY = "window.document.msgArray";
-
   protected final WebDriver webDriver;
 
   // used for javascript alerts for headless browsers
   private static final String ALERT_COOKIE_NAME = "alertMsg";
-
   private static final String ALERT_NEW_LINE_REPLACE = "#newLine#";
 
+  private static final String WAIT_FOR_PAGE_PROP = "test.config.page.load.timeout";
+  
   protected HtmlView(WebDriver webDriver)
   {
     this.webDriver = webDriver;
@@ -661,8 +657,17 @@ public abstract class HtmlView
   protected void waitForPageToLoad(boolean ignoreWebDriverException)
   {
     LOG.debug("Wait for page to load..");
-    // TODO: Mar 23, 2015 (bbarker) - Parameterize this 90 second wait value
-    WebDriverWait wait = new WebDriverWait(webDriver, 90);
+    String stringWaitProp = System.getProperty(WAIT_FOR_PAGE_PROP, "90");
+    int waitProp;
+    
+    try {
+      waitProp = Integer.parseInt(stringWaitProp);
+    }
+    catch (NumberFormatException e) {
+      throw new NumberFormatException(String.format("%s, could not determine %s", e.getMessage(), WAIT_FOR_PAGE_PROP));
+    }
+    
+    WebDriverWait wait = new WebDriverWait(webDriver, waitProp);
 
     if (ignoreWebDriverException) {
       wait.ignoring(WebDriverException.class);
