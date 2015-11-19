@@ -32,9 +32,10 @@ public class StoryParameterFactory
    * Method that knows how to convert some visible text to a corresponding enum
    * value.
    *
-   * @param clazz
-   * @param visibleText
-   * @return
+   * @param clazz enum class
+   * @param visibleText text appearing in test
+   * @param <T> instance of {@link StoryParameter}
+   * @return story parameter of the mapped value
    */
   public static <T extends StoryParameter> T valueOf(Class<T> clazz, String visibleText)
   {

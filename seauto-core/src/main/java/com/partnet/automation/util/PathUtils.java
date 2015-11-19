@@ -69,6 +69,7 @@ public class PathUtils
 
   /**
    * Gets the path to /&lt;project_dir&gt;/src/test/resources/stories
+   * @return {@link Path} /&lt;project_dir&gt;/src/test/resources/stories
    */
   public static Path getStoriesPath()
   {
@@ -77,6 +78,7 @@ public class PathUtils
 
   /**
    * Gets the path to /&lt;project_dir&gt;
+   * @return {@link Path} for the current project
    */
   public static Path getProjectPath()
   {
@@ -93,6 +95,7 @@ public class PathUtils
 
   /**
    * Gets the path to /&lt;project_dir&gt;/resources/
+   * @return {@link Path} for the base resources.
    */
   public static Path getBaseResourcesPath()
   {
@@ -126,8 +129,8 @@ public class PathUtils
      * Appends folders to the given {@link StringBuilder}. Each folder given is
      * appended with a file separator afterwards
      * 
-     * @param folders
-     *          folders to append
+     * @param folders folders to append.
+     * @return {@link Path} with new folder
      */
     public Path appendFolders(String... folders)
     {
@@ -142,6 +145,9 @@ public class PathUtils
     /**
      * Finishes the path with a file. Once a file has been added, the path is
      * locked and can not be changed.
+     * @param file file to append
+     *
+     * @return a new path containing the appended file
      */
     public Path appendFile(String file)
     {

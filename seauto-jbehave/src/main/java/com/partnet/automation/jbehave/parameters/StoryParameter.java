@@ -30,6 +30,7 @@ public interface StoryParameter
 
   /**
    * Gets the text of the select option
+   * @return the visible text of some representation
    */
   String getVisibleText();
 

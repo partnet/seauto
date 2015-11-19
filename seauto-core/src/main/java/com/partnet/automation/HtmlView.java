@@ -79,6 +79,7 @@ public abstract class HtmlView
 
   /**
    * Get the current browser - convenience method
+   * @return current {@link Browser} enum value
    */
   protected Browser getBrowser()
   {
@@ -116,6 +117,9 @@ public abstract class HtmlView
    * href="http://code.google.com/p/selenium/issues/detail?id=2936">2936</a>
    *
    * @author <a href="mailto:bbarker@part.net">bbarker</a>
+   *
+   * @param webElement web element to click on
+   * @return instance of HTMLView
    */
   protected final HtmlView clickAndWait(WebElement webElement)
   {
@@ -177,8 +181,8 @@ public abstract class HtmlView
   /**
    * Get the text value in the given WebElement.
    * 
-   * @param elt
-   *          - target to get the value of
+   * @param elt target to get the value of
+   * @return value of the web element
    */
   protected String getValue(WebElement elt)
   {
@@ -254,7 +258,7 @@ public abstract class HtmlView
 
   /**
    * Obtains the first selected option from a dropdown
-   * 
+   * @param webElement select option element
    * @return - string of the visible selected text
    */
   protected String getSelectedVisibleText(WebElement webElement)
@@ -271,7 +275,7 @@ public abstract class HtmlView
    * 
    * @param webElement
    *          - the element to get the text of
-   * @return
+   * @return list of visible dropdown text entries
    */
   protected List<String> getAllDropdownVisibleTextEntries(WebElement webElement)
   {
@@ -291,8 +295,8 @@ public abstract class HtmlView
    * An expectation for checking that an element is present on the DOM of a
    * page. This does not necessarily mean that the element is visible.
    * 
-   * @param by
-   * @param maxWaitInSeconds
+   * @param by locator for the element
+   * @param maxWaitInSeconds max seconds to wait for element to appear
    * @return WebElement
    */
   protected WebElement waitForPresenceOfElement(By by, int maxWaitInSeconds)
@@ -306,8 +310,8 @@ public abstract class HtmlView
    * <p>
    * Use when more that one WebElement could be returned.
    * 
-   * @param by
-   * @param maxWaitInSeconds
+   * @param by locator of the elements searching for
+   * @param maxWaitInSeconds max seconds waiting for all elements
    * @return {@link List} of {@link WebElement}
    */
   protected List<WebElement> waitForPresenceOfAllElements(By by, int maxWaitInSeconds)
@@ -324,8 +328,8 @@ public abstract class HtmlView
    * See also
    * {@link com.partnet.automation.HtmlView#waitForElementToBeClickable(WebElement, int)}.
    * 
-   * @param by
-   * @param maxWaitInSeconds
+   * @param by locator of element wanting to click
+   * @param maxWaitInSeconds max seconds to wait for the element to become clickable
    * @return WebElement
    */
   protected WebElement waitForElementToBeClickable(By by, int maxWaitInSeconds)
@@ -559,7 +563,7 @@ public abstract class HtmlView
    * <p>
    * <b>Note</b>: This does <b>NOT</b> work with headless browsers!
    * 
-   * @return
+   * @return the found alert
    */
   protected Alert isAlertPresent()
   {
@@ -586,7 +590,8 @@ public abstract class HtmlView
   /**
    * Waits 3 seconds for an alert to appear on the page. This is typically only
    * used for Internet Explorer
-   * 
+   * @return the found alert
+   *
    * @throws TimeoutException
    *           - if the timeout has been reached
    */
@@ -598,6 +603,11 @@ public abstract class HtmlView
   /**
    * Waits a specific amount of time for a field to be auto-populated with the
    * specified regex Note: Regex must match the ENTIRE field to pass
+   *
+   * @param seconds seconds to wait for field to populate
+   * @param regex regex of what the expected field should be
+   * @param field element to wait for this change
+   *
    */
   protected void waitForFieldToPopulate(int seconds, String regex, WebElement field)
   {
@@ -610,7 +620,7 @@ public abstract class HtmlView
    * Generic method to wait for a dialog to complete loading. It returns the
    * WebElement containing the entire dialog scope
    * 
-   * @param dialogContentLocator
+   * @param dialogContentLocator dialog to wait to load
    * @return - {@link WebElement} containing the entire Dialog scope.
    */
   protected WebElement waitForDialogToAppear(By dialogContentLocator)
@@ -621,9 +631,9 @@ public abstract class HtmlView
   /**
    * Waits a specified amount of time for an element to become clickable.
    * 
-   * @param elm
-   * @param maxWaitSeconds
-   * @throws TimeoutException
+   * @param elm element to wait for
+   * @param maxWaitSeconds seconds to wait
+   * @throws TimeoutException if timeout has been reached
    */
   protected void waitForElementToBeClickable(WebElement elm, int maxWaitSeconds)
   {
@@ -916,6 +926,7 @@ public abstract class HtmlView
    * Trigger the <code>focus</code> javascript event on a element.
    * 
    * @see #focusOrBlur(WebElement, WebDriver, boolean)
+   * @param triggerElm element to focus
    */
   protected void focusElement(WebElement triggerElm)
   {
@@ -927,6 +938,7 @@ public abstract class HtmlView
    * from the element)
    * 
    * @see #focusOrBlur(WebElement, WebDriver, boolean)
+   * @param triggerElm element to blur
    */
   protected void blurElement(WebElement triggerElm)
   {
@@ -958,7 +970,7 @@ public abstract class HtmlView
   /**
    * Obtains the hidden text for a web element.
    * 
-   * @param webElm
+   * @param webElm element to get hidden text from
    * @see <a
    *      href="http://stackoverflow.com/questions/1359469/innertext-works-in-ie-but-not-in-firefox">1</a>
    * @see <a
@@ -967,6 +979,7 @@ public abstract class HtmlView
    *      href="http://stackoverflow.com/questions/24427621/innertext-vs-innerhtml-vs-label-vs-text-vs-textcontent-vs-outertext">3</a>
    * @see <a
    *      href="http://www.kellegous.com/j/2013/02/27/innertext-vs-textcontent">4</a>
+   * @return hidden text of web elem
    */
   protected String getHiddenText(WebElement webElm)
   {
@@ -1026,8 +1039,8 @@ public abstract class HtmlView
    * WebElement waitElement =
    * fluentWait(By.cssSelector(div[class='someClass']));
    * 
-   * @param locator
-   * @return
+   * @param locator locator of the element to find
+   * @return Web element of found element
    */
   protected WebElement waitForElementToAppear(final By locator)
   {
@@ -1067,8 +1080,8 @@ public abstract class HtmlView
   /**
    * Waits for a json response with the desired key
    * 
-   * @param key
-   * @return
+   * @param key of json response to look for
+   * @return {@link JSONObject} of the ajax response
    */
   protected JSONObject waitForAjaxResponse(String key)
   {

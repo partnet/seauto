@@ -118,9 +118,9 @@ public class StandaloneDriverDownloadAssistant
   /**
    * Downloads the driver for the given browser.
    * 
-   * @param browser
+   * @param browser browser to obtain binary for
    * @return the file of the binary downloaded
-   * @throws IOException
+   * @throws IOException if there is a issue with the binary
    */
   public File downloadDriverFor(Browser browser)
       throws IOException
@@ -169,10 +169,10 @@ public class StandaloneDriverDownloadAssistant
   /**
    * Obtain the download url by using the default URL, or url from the property
    * 
-   * @param browser
-   * @param os
-   * @param defaultUrl
-   * @return
+   * @param browser browser to resolve URL
+   * @param os operating system to get binary for
+   * @param defaultUrl url location of the binary
+   * @return the url used to download the binary
    */
   private String resolveUrl(OperatingSystem os, Browser browser, String defaultUrl)
   {
@@ -217,7 +217,7 @@ public class StandaloneDriverDownloadAssistant
    *          - name of the file to determine if the .exe is needed
    * @param os
    *          - the current operating system
-   * @return
+   * @return the file's extension
    */
   private String determineFileExtension(String filename, OperatingSystem os)
   {
@@ -229,7 +229,7 @@ public class StandaloneDriverDownloadAssistant
    * 
    * Currently unpacking is only supported for .zip and .tar.bz2 files.
    * 
-   * @param url
+   * @param url url to download
    * @throws IOException
    */
   private void downloadAndUnpack(String url)
@@ -257,8 +257,8 @@ public class StandaloneDriverDownloadAssistant
   /**
    * Downloads the file for the given string URL
    * 
-   * @param url
-   * @return
+   * @param url url to download
+   * @return the {@link File} of the download
    * @throws IOException
    */
   private File download(String url)

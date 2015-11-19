@@ -50,6 +50,8 @@ public class PageProvider
    *          type of Page requested
    * @param jumpTo
    *          set true to call the page's {@link Page#jumpTo()} method before verifying the page.
+   * @param <T>
+   *          {@link Page} instance
    * @return Page of the specified type
    * @see Page#initialize(boolean)
    */

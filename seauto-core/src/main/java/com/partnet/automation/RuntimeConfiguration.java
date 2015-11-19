@@ -114,6 +114,7 @@ public class RuntimeConfiguration
   /**
    * Get the story path inclusion string, to be passed into the
    * StoryFinder().findPaths
+   * @return the story inclusion path
    */
   public String getStoryPathInclusion()
   {

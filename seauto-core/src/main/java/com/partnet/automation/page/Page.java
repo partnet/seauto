@@ -29,7 +29,7 @@ import com.partnet.automation.page.panel.PanelProvider;
 
 /**
  * Base page object. Provides a common constructor for subclasses and various
- * helper methods to support {@link #initialize()} and {@link #verify()}.
+ * helper methods to support {@link #initialize(boolean)} and {@link #verify()}.
  * 
  * @author <a href="mailto:rbascom@part.net">rbascom</a>
  * @author fpedroza
@@ -66,6 +66,7 @@ public abstract class Page
 
   /**
    * Get the current title of the current page the browser is on
+   * @return String of the pages title
    */
   protected String getTitle()
   {
@@ -168,7 +169,7 @@ public abstract class Page
    * <p>
    *   @param jumpTo - calls the {@link #jumpTo method} if true, intending to jump to the specific page via a URL path
    * 
-   * @throws IllegalStateException
+   * @throws IllegalStateException if ready or verify are in an illegal state
    */
   public final void initialize(boolean jumpTo)
       throws IllegalStateException

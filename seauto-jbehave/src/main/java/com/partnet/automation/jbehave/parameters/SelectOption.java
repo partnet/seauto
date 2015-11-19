@@ -30,6 +30,7 @@ public interface SelectOption
 
   /**
    * Gets the value of the select option
+   * @return the value of the select option
    */
   String getValue();
 

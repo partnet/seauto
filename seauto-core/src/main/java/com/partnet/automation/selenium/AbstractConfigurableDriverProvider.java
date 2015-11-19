@@ -98,8 +98,9 @@ public abstract class AbstractConfigurableDriverProvider
    * For a quick start, use
    * {@link AbstractConfigurableDriverProvider#getDefaultWebDriver(Browser)}
    * 
-   * @param browser
-   *          browser to get the driver for
+   * @param browser desired browser for test
+   *                
+   * @return handle to {@link WebDriver}
    */
   protected abstract WebDriver getWebDriver(Browser browser);
 
@@ -167,6 +168,8 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Sets the given web driver to the current thread
+   *
+   * @param driver {@link WebDriver} to set for current thread
    */
   protected void set(WebDriver driver)
   {
@@ -399,6 +402,7 @@ public abstract class AbstractConfigurableDriverProvider
    * Used to indicate whether or not a proxy should be used by default.
    * 
    * @see #USE_PROXY_BY_DEFAULT
+   * @return true if using proxy, false otherwise
    */
   protected boolean useProxy()
   {

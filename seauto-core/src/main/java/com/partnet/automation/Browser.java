@@ -65,7 +65,7 @@ public enum Browser
    * Returns the Browser enum constant found from the browserName. If
    * browserName is null or blank, null is returned.
    * 
-   * @param browserName
+   * @param browserName string representation of the enum constant
    * @return null if browserName is blank or null, otherwise returns the enum
    *         constant
    * @throws IllegalArgumentException
@@ -80,6 +80,8 @@ public enum Browser
 
   /**
    * Obtains the browser associated with the given driver.
+   * @param driver {@link WebDriver} instance to determine the browser type
+   * @return {@link Browser} enum value of the current web driver
    */
   public static Browser getBrowser(WebDriver driver)
   {

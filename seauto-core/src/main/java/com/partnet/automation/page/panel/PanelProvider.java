@@ -38,11 +38,11 @@ public class PanelProvider
   /**
    * Obtain a panel.
    * 
-   * @param clazz
-   *          type of Panel requested
+   * @param clazz  type of Panel requested
+   * @param <T> panel class
    * @return Panel of the specified type
    */
-  public <T extends Panel> T get(final Class<T> clazz)
+  public <T extends Panel> T get(Class<T> clazz)
   {
     return createPanel(clazz);
   }
