@@ -35,7 +35,7 @@ public class BrowserSteps
 
   public void verifyCurrentBrowserIs(Browser expectedBrowser)
   {
-    Browser actualBrowser = pageProvider.get(DummyPage.class).getCurrentBrowser();
+    Browser actualBrowser = pageProvider.get(DummyPage.class, false).getCurrentBrowser();
     Assert.assertEquals("The browser for the current thread is not correct", expectedBrowser, actualBrowser);
   }
 

@@ -96,7 +96,7 @@ public abstract class AbstractConfigurableDriverProvider
    * Get a {@link WebDriver} for the specified {@link Browser}
    * 
    * For a quick start, use
-   * {@link AbstractConfigurableDriverProvider#getWebDriver(Browser)}
+   * {@link AbstractConfigurableDriverProvider#getDefaultWebDriver(Browser)}
    * 
    * @param browser
    *          browser to get the driver for
@@ -109,8 +109,8 @@ public abstract class AbstractConfigurableDriverProvider
    * Use this as a quick start guide for
    * {@link AbstractConfigurableDriverProvider#getWebDriver(Browser)}
    * 
-   * @param browser
-   * @return
+   * @param browser browser to obtain
+   * @return instance of the specific WebDriver
    */
   protected WebDriver getDefaultWebDriver(Browser browser)
   {
@@ -347,8 +347,8 @@ public abstract class AbstractConfigurableDriverProvider
    * Takes screenshot of the current driver. Screeshot will be skipped if
    * test.config.driver.screenshots.allow is set to false.
    * 
-   * @param path
-   * @return - true if succeeded, false otherwise
+   * @param path location where the screenshot should be saved at
+   * @return true if succeeded, false otherwise
    */
   @Override
   public boolean saveScreenshotAs(String path)
@@ -413,6 +413,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Get the browser to use by default; HTMLUNIT is the optimistic default.
+   * @return the default browser to use, if one is not defined.
    */
   protected Browser getDefaultBrowser()
   {
@@ -460,6 +461,7 @@ public abstract class AbstractConfigurableDriverProvider
    * A special case needs to be performed for the Android browser, since it can not be cast to {@link RemoteWebDriver}
    *
    * @param capabilities web driver capabilities.
+   * @return {@link WebDriver} instance of the remote web driver
    *
    */
   protected WebDriver initRemoteWebDriver(DesiredCapabilities capabilities)
@@ -513,7 +515,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Simple Thread sleep method that catches InterruptException.
-   * @param millis
+   * @param millis time (in milliseconds) to sleep
    */
   private void sleep(int millis)
   {
@@ -532,7 +534,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Basic method to check if a system property exists
-   * @param systemProperty
+   * @param systemProperty the system property to check
    * @return boolean if system property exists - true if it does, false otherwise.
    */
   private boolean isSysPropAvailable(final String systemProperty) {
@@ -605,7 +607,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Default implementation of getting a local HTMLUnit Driver
    * 
-   * @return
+   * @return {@link WebDriver} for HTMLUnit
    */
   protected WebDriver getHtmlUnitWebDriver()
   {
@@ -617,6 +619,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Default implementation throws UnsupportedOperationException
+   * @return WebDriver instance
    */
   protected WebDriver getPhantomJsWebDriver()
   {
@@ -633,8 +636,9 @@ public abstract class AbstractConfigurableDriverProvider
    * Helper method to get the correct driver binary for the given operating
    * system.
    * 
-   * @param binProp
-   * @return
+   * @param binProp system property that needs to be OS specific
+   * @param def default property
+   * @return binary property for the current OS
    */
   protected String getOsSpecificBinaryProperty(String binProp, String def)
   {
@@ -663,11 +667,9 @@ public abstract class AbstractConfigurableDriverProvider
    * Helper method to locate the correct binary for the given driver.
    * 
    * 
-   * @param binProp
-   *          - property to pull the binary name from
-   * @param def
-   *          - default property
-   * @return - string containing the entire path and binary name
+   * @param binProp property to pull the binary name from
+   * @param def default property
+   * @return string containing the entire path and binary name
    */
   protected String getOsSpecificBinaryPathFromProp(String binProp, String def)
   {
@@ -696,7 +698,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Obtains the default firefox web driver.
    * 
-   * @return
+   * @return {@link WebDriver} for the Firefox instance
    */
   protected WebDriver getFirefoxWebDriver()
   {
@@ -721,6 +723,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Default remote firefox instance
+   * @return {@link WebDriver} for the remote Firefox instance
    */
   protected WebDriver getRemoteFirefoxWebDriver()
   {
@@ -730,11 +733,11 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Default firefox capabilities
+   * @return capabilities for the Firefox driver.
    */
   protected DesiredCapabilities getFirefoxCapabilities()
   {
-    final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-    return capabilities;
+    return DesiredCapabilities.firefox();
   }
 
   protected WebDriver getChromeWebDriver()
@@ -744,9 +747,7 @@ public abstract class AbstractConfigurableDriverProvider
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, pathToDriverBin);
     DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 
-    WebDriver driver = new ChromeDriver(capabilities);
-
-    return driver;
+    return new ChromeDriver(capabilities);
   }
 
   protected WebDriver getRemoteChromeWebDriver()
@@ -757,7 +758,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Configuration to get a handle to the Android driver
-   * @return
+   * @return initialized instance of the {@link AndroidDriver}
    */
   private WebDriver getRemoteAndroidWebDriver() {
 

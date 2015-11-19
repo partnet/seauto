@@ -38,6 +38,6 @@ public class DriverSteps
   @Then("^the HTMLUnit driver should be running$")
   public void thenDriverShouldBeRunning()
   {
-    Assert.assertEquals(Browser.HTMLUNIT, pageProvider.get(BrowserPage.class).getCurrentBrowser());
+    Assert.assertEquals(Browser.HTMLUNIT, pageProvider.get(BrowserPage.class, false).getCurrentBrowser());
   }
 }
