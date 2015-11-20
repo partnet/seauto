@@ -62,8 +62,7 @@ public class SeAuto
       throws Exception
   {
     // get fully injected instance of the test class
-    Object obj = weld.instance().select(klass).get();
-    return obj;
+    return weld.instance().select(klass).get();
   }
 
   @Override
@@ -71,16 +70,26 @@ public class SeAuto
   {
     DriverProvider driverProvider = weld.instance().select(DriverProvider.class).get();
 
-    if (runWithBrowser(method)) {
-      // prefer annotations of methods over class, but use class as a fallback.
-      Browser browser = getBrowser(method.getAnnotations());
-
-      if (browser == null) {
-        browser = getBrowser(klass.getAnnotations());
-      }
-
-      driverProvider.launch(browser);
+    if (super.isIgnored(method)) {
+      runChild(method, notifier);
+      return;
     }
+
+    // prefer annotations of methods over class, but use class as a fallback.
+    Browser browser = getBrowser(method.getAnnotations());
+
+    if (browser == null) {
+      browser = getBrowser(klass.getAnnotations());
+    }
+
+    try {
+      driverProvider.launch(browser);
+    } catch (Throwable e) {
+      //shut down driver if it is running
+      finalizeTest(method, driverProvider);
+      throw e;
+    }
+
 
     try {
       super.runChild(method, notifier);
@@ -93,16 +102,18 @@ public class SeAuto
 
   /**
    * Finalizes the test by taking a screenshot, then killing the browser
-   * @param method
-   * @param driverProvider
+   * @param method {@link FrameworkMethod} for the running test
+   * @param driverProvider Web driver provider
    */
   private void finalizeTest(FrameworkMethod method, DriverProvider driverProvider)
   {
-    if (runWithBrowser(method)) {
-      takeScreenshot(method, driverProvider);
-      log.debug("Ending browser for test " + getTestName(method));
-      driverProvider.end();
+    if (super.isIgnored(method)) {
+      return;
     }
+
+    takeScreenshot(method, driverProvider);
+    log.debug("Ending browser for test " + getTestName(method));
+    driverProvider.end();
   }
 
   private void takeScreenshot(FrameworkMethod method, DriverProvider driverProvider)
@@ -118,16 +129,11 @@ public class SeAuto
     return klass.getName() + "-" + method.getName();
   }
 
-  private boolean runWithBrowser(FrameworkMethod method)
-  {
-    return !super.isIgnored(method);
-  }
-
   /**
    * Helper method to determine what browser to launch given the annotations
    * 
-   * @param annotations
-   * @return
+   * @param annotations array of {@link Annotation}
+   * @return the {@link Browser} enum
    */
   private Browser getBrowser(Annotation[] annotations)
   {

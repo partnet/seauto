@@ -182,7 +182,7 @@ public abstract class AbstractConfigurableDriverProvider
     WebDriver driver = this.delegate.get();
 
     if (driver == null) {
-      LOG.warn("driver on this thread has not been launched!");
+      LOG.debug("driver on this thread is not currently running!");
     }
     return driver;
   }
@@ -195,20 +195,20 @@ public abstract class AbstractConfigurableDriverProvider
     // https://code.google.com/p/selenium/issues/detail?id=7272
     // https://code.google.com/p/selenium/issues/detail?id=4790
     WebDriver driver = this.get();
-    if (driver != null) {
-      LOG.debug("Stopping driver");
 
-      //closing android browser is not supported
-      if(!Browser.getBrowser(driver).isAndroid()) {
-        driver.close();
-      }
-
-      this.get().quit();
-      this.set(null);
-    }
-    else {
+    if (driver == null) {
       LOG.debug("No driver to stop");
+      return;
     }
+
+    LOG.debug("Stopping driver");
+    //closing android browser is not supported
+    if(!Browser.getBrowser(driver).isAndroid()) {
+      driver.close();
+    }
+
+    this.get().quit();
+    this.set(null);
   }
 
   /**
