@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.Cookie;
@@ -69,37 +70,37 @@ public abstract class AbstractConfigurableDriverProvider
 
   // TODO: Feb 4, 2015 (bbarker) - Fix proxy setting here
   protected final String USE_PROXY_BY_DEFAULT = "test.config.default.useProxy";
-
   protected final String BROWSER_SYSTEM_PROPERTY_NAME = "test.config.browser";
-
   protected final String SELENIUM_REMOTE_URL = "test.config.selenium.url";
-
   protected final String REMOTE_WEBDRIVER_RETRY_ATTEMPTS = "remote.webdriver.retry.attempts";
-
   protected final String REMOTE_WEBDRIVER_RETRY_PAUSE_MILLIS = "remote.webdriver.retry.pause.millis";
-
   protected final String PAGE_LOAD_TIMEOUT_SECONDS = "test.config.page.load.timeout";
-
   protected final String PHANTOM_JS_BIN_PROP = "test.config.driver.phantomjs.bin";
-
   protected final String CHROME_DRIVER_BIN_PROP = "test.config.driver.chrome.bin";
-
   protected final String IE_DRIVER_BIN_PROP = "test.config.driver.ie.bin";
-
+  protected final String ALLOW_SCREENSHOTS = "test.config.driver.screenshots.allow";
   protected final String DRIVER_BIN_PATH_APPEND = ".path";
-
   protected final String WINDOWS_APPEND = ".windows";
-
   protected final String MAC_APPEND = ".mac";
+  protected final String ANDROID_APP_PKG = "test.config.android.app.package";
+  protected final String ANDROID_APP_WAIT_PKG = "test.config.android.app.wait.package";
+  protected final String ANDROID_PLATFORM_NAME = "test.config.android.platform.name";
+  protected final String ANDROID_PLATFORM_VERSION = "test.config.android.platform.version";
+  protected final String ANDROID_SELENDROID_PORT = "test.config.android.selendroid.port";
+  protected final String ANDROID_DEVICE_NAME = "test.config.android.device.name";
+  protected final String ANDROID_APK_PATH = "test.config.android.apk.path";
+  protected final String ANDROID_BROWSER_NAME = "android";
+
 
   /**
    * Get a {@link WebDriver} for the specified {@link Browser}
    * 
    * For a quick start, use
-   * {@link AbstractConfigurableDriverProvider#getWebDriver(Browser)}
+   * {@link AbstractConfigurableDriverProvider#getDefaultWebDriver(Browser)}
    * 
-   * @param browser
-   *          browser to get the driver for
+   * @param browser desired browser for test
+   *                
+   * @return handle to {@link WebDriver}
    */
   protected abstract WebDriver getWebDriver(Browser browser);
 
@@ -109,15 +110,15 @@ public abstract class AbstractConfigurableDriverProvider
    * Use this as a quick start guide for
    * {@link AbstractConfigurableDriverProvider#getWebDriver(Browser)}
    * 
-   * @param browser
-   * @return
+   * @param browser browser to obtain
+   * @return instance of the specific WebDriver
    */
   protected WebDriver getDefaultWebDriver(Browser browser)
   {
     Objects.requireNonNull(browser, "browser cannot be null");
 
     WebDriver driver;
-    boolean useRemoteBrowser = (getRemoteUrl() != null);
+    boolean useRemoteBrowser = (getRemoteSeleniumUrlString() != null);
 
     LOG.debug("Initialize: '{}' using remote browser: '{}'", browser, useRemoteBrowser);
     switch (browser) {
@@ -148,18 +149,27 @@ public abstract class AbstractConfigurableDriverProvider
         driver = getHtmlUnitWebDriver();
         break;
 
+      case ANDROID:
+        driver = getRemoteAndroidWebDriver();
+        break;
+
       default:
         throw new IllegalArgumentException(String.format("Unsupported browser: '%s'", browser.name()));
     }
 
     LOG.debug("Using WebDriver implementation of type : {}", driver.getClass());
-    driver.manage().timeouts().pageLoadTimeout(Integer.getInteger(PAGE_LOAD_TIMEOUT_SECONDS, 120), TimeUnit.SECONDS);
+
+    if(!browser.isAndroid()) {
+      driver.manage().timeouts().pageLoadTimeout(Integer.getInteger(PAGE_LOAD_TIMEOUT_SECONDS, 120), TimeUnit.SECONDS);
+    }
 
     return driver;
   }
 
   /**
    * Sets the given web driver to the current thread
+   *
+   * @param driver {@link WebDriver} to set for current thread
    */
   protected void set(WebDriver driver)
   {
@@ -172,7 +182,7 @@ public abstract class AbstractConfigurableDriverProvider
     WebDriver driver = this.delegate.get();
 
     if (driver == null) {
-      LOG.warn("driver on this thread has not been launched!");
+      LOG.debug("driver on this thread is not currently running!");
     }
     return driver;
   }
@@ -185,15 +195,20 @@ public abstract class AbstractConfigurableDriverProvider
     // https://code.google.com/p/selenium/issues/detail?id=7272
     // https://code.google.com/p/selenium/issues/detail?id=4790
     WebDriver driver = this.get();
-    if (driver != null) {
-      LOG.debug("Stopping driver");
-      driver.close();
-      this.get().quit();
-      this.set(null);
-    }
-    else {
+
+    if (driver == null) {
       LOG.debug("No driver to stop");
+      return;
     }
+
+    LOG.debug("Stopping driver");
+    //closing android browser is not supported
+    if(!Browser.getBrowser(driver).isAndroid()) {
+      driver.close();
+    }
+
+    this.get().quit();
+    this.set(null);
   }
 
   /**
@@ -332,14 +347,21 @@ public abstract class AbstractConfigurableDriverProvider
   }
 
   /**
-   * Takes screenshot of the current driver
+   * Takes screenshot of the current driver. Screeshot will be skipped if
+   * test.config.driver.screenshots.allow is set to false.
    * 
-   * @param path
-   * @return - true if succeeded, false otherwise
+   * @param path location where the screenshot should be saved at
+   * @return true if succeeded, false otherwise
    */
   @Override
   public boolean saveScreenshotAs(String path)
   {
+
+    if(!Boolean.valueOf(System.getProperty(ALLOW_SCREENSHOTS, "true"))) {
+      LOG.debug("Skipping screenshot");
+      return false;
+    }
+
     WebDriver driver = this.get();
 
     if (driver instanceof HtmlUnitDriver) {
@@ -380,6 +402,7 @@ public abstract class AbstractConfigurableDriverProvider
    * Used to indicate whether or not a proxy should be used by default.
    * 
    * @see #USE_PROXY_BY_DEFAULT
+   * @return true if using proxy, false otherwise
    */
   protected boolean useProxy()
   {
@@ -394,6 +417,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Get the browser to use by default; HTMLUNIT is the optimistic default.
+   * @return the default browser to use, if one is not defined.
    */
   protected Browser getDefaultBrowser()
   {
@@ -402,60 +426,89 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Get the value of the remote URL to connect to.
-   * 
+   *
+   * @return null if the system property {@link #SELENIUM_REMOTE_URL} is blank, otherwise returns the {@link URL}
    * @see #SELENIUM_REMOTE_URL
+   * @throws IllegalArgumentException if the {@link #SELENIUM_REMOTE_URL} is malformed.
    */
-  protected String getRemoteUrl()
+  protected URL getRemoteSeleniumUrl()
   {
+    URL url;
+    String stringUrl = getRemoteSeleniumUrlString();
+    try {
+      url = new URL(stringUrl);
+    } catch (MalformedURLException e) {
+      LOG.error("invalid url: {}", stringUrl, e);
+      throw new IllegalStateException(String.format("The url '%s' is malformed!", stringUrl), e);
+    }
+    return url;
+  }
+
+  /**
+   * Returns the string property for {@link #SELENIUM_REMOTE_URL}
+   * @return the url in string form, or null if it does not exist.
+   */
+  protected String getRemoteSeleniumUrlString() {
     return StringUtils.trimToNull(System.getProperty(SELENIUM_REMOTE_URL));
   }
 
   /**
    * Helper method to launch remote web driver.
-   * 
+   *
    * At times there are issues with starting the remote web driver. For firefox,
    * problems with locking port 7054 can arise.
-   * 
+   *
    * See the Selenium <a
    * href="https://code.google.com/p/selenium/issues/detail?id=4790">bug</a> for
    * more info
+   *
+   * A special case needs to be performed for the Android browser, since it can not be cast to {@link RemoteWebDriver}
+   *
+   * @param capabilities web driver capabilities.
+   * @return {@link WebDriver} instance of the remote web driver
+   *
    */
   protected WebDriver initRemoteWebDriver(DesiredCapabilities capabilities)
   {
-    String remoteUrl = getRemoteUrl();
-    LOG.debug("Remote Selenium URL: {}", remoteUrl);
+    URL remoteUrl = getRemoteSeleniumUrl();
+    LOG.debug("Remote Selenium URL: {}", remoteUrl.toString());
     WebDriver driver = null;
+    boolean isAndroid = false;
     int tries = 1;
 
+    if(capabilities.getCapability(CapabilityType.BROWSER_NAME).equals(ANDROID_BROWSER_NAME)) {
+      isAndroid = true;
+    }
+
     while (driver == null) {
-      LOG.debug("Try {}", tries);
+      LOG.debug("Try {} {}", tries, capabilities.toString());
+
       try {
-        driver = new RemoteWebDriver(new URL(remoteUrl), capabilities);
-      }
-      catch (MalformedURLException e) {
-        LOG.error("invalid url: {}", remoteUrl, e);
-        throw new IllegalStateException(String.format("The url '%s' is malformed!", remoteUrl), e);
-      }
-      catch (WebDriverException e) {
+
+        if(isAndroid) {
+          driver = new AndroidDriver(remoteUrl, capabilities);
+        }
+        else {
+          driver = new RemoteWebDriver(remoteUrl, capabilities);
+        }
+
+      } catch (WebDriverException e) {
         LOG.error("Remote WebDriver was unable to start! " + e.getMessage(), e);
 
         if (tries >= Integer.getInteger(REMOTE_WEBDRIVER_RETRY_ATTEMPTS, 10)) {
           throw e;
         }
 
-        try {
-          Thread.sleep(Integer.getInteger(REMOTE_WEBDRIVER_RETRY_PAUSE_MILLIS, 5000) * tries);
-        }
-        catch (InterruptedException e1) {
-          LOG.error("Exception occurred sleeping", e1);
-        }
+        sleep(Integer.getInteger(REMOTE_WEBDRIVER_RETRY_PAUSE_MILLIS, 5000) * tries);
         tries++;
         driver = null;
       }
     }
 
-    // allow screenshots to be taken
-    driver = new Augmenter().augment(driver);
+    if(!isAndroid) {
+      // allow screenshots to be taken
+      driver = new Augmenter().augment(driver);
+    }
 
     // Allow files from the host to be uploaded to a remote browser
     ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
@@ -463,10 +516,33 @@ public abstract class AbstractConfigurableDriverProvider
     return driver;
   }
 
+
+  /**
+   * Simple Thread sleep method that catches InterruptException.
+   * @param millis time (in milliseconds) to sleep
+   */
+  private void sleep(int millis)
+  {
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException e) {
+      LOG.error("Exception occurred sleeping", e);
+    }
+  }
+
   private boolean doesFileExist(final String path)
   {
     final File file = new File(path);
     return file.exists();
+  }
+
+  /**
+   * Basic method to check if a system property exists
+   * @param systemProperty the system property to check
+   * @return boolean if system property exists - true if it does, false otherwise.
+   */
+  private boolean isSysPropAvailable(final String systemProperty) {
+    return System.getProperty(systemProperty) != null;
   }
 
   /*
@@ -535,18 +611,19 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Default implementation of getting a local HTMLUnit Driver
    * 
-   * @return
+   * @return {@link WebDriver} for HTMLUnit
    */
   protected WebDriver getHtmlUnitWebDriver()
   {
     // Set to firefox 24 to emulate a friendly javascript engine
-    HtmlUnitDriver driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
+    HtmlUnitDriver driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_38);
     driver.setJavascriptEnabled(true);
     return driver;
   }
 
   /**
    * Default implementation throws UnsupportedOperationException
+   * @return WebDriver instance
    */
   protected WebDriver getPhantomJsWebDriver()
   {
@@ -563,8 +640,9 @@ public abstract class AbstractConfigurableDriverProvider
    * Helper method to get the correct driver binary for the given operating
    * system.
    * 
-   * @param binProp
-   * @return
+   * @param binProp system property that needs to be OS specific
+   * @param def default property
+   * @return binary property for the current OS
    */
   protected String getOsSpecificBinaryProperty(String binProp, String def)
   {
@@ -593,11 +671,9 @@ public abstract class AbstractConfigurableDriverProvider
    * Helper method to locate the correct binary for the given driver.
    * 
    * 
-   * @param binProp
-   *          - property to pull the binary name from
-   * @param def
-   *          - default property
-   * @return - string containing the entire path and binary name
+   * @param binProp property to pull the binary name from
+   * @param def default property
+   * @return string containing the entire path and binary name
    */
   protected String getOsSpecificBinaryPathFromProp(String binProp, String def)
   {
@@ -626,7 +702,7 @@ public abstract class AbstractConfigurableDriverProvider
   /**
    * Obtains the default firefox web driver.
    * 
-   * @return
+   * @return {@link WebDriver} for the Firefox instance
    */
   protected WebDriver getFirefoxWebDriver()
   {
@@ -651,6 +727,7 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Default remote firefox instance
+   * @return {@link WebDriver} for the remote Firefox instance
    */
   protected WebDriver getRemoteFirefoxWebDriver()
   {
@@ -660,11 +737,11 @@ public abstract class AbstractConfigurableDriverProvider
 
   /**
    * Default firefox capabilities
+   * @return capabilities for the Firefox driver.
    */
   protected DesiredCapabilities getFirefoxCapabilities()
   {
-    final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-    return capabilities;
+    return DesiredCapabilities.firefox();
   }
 
   protected WebDriver getChromeWebDriver()
@@ -674,15 +751,45 @@ public abstract class AbstractConfigurableDriverProvider
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, pathToDriverBin);
     DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 
-    WebDriver driver = new ChromeDriver(capabilities);
-
-    return driver;
+    return new ChromeDriver(capabilities);
   }
 
   protected WebDriver getRemoteChromeWebDriver()
   {
     // TODO Auto-generated method stub
     throw new IllegalStateException("Getting remote chrome driver is not implemented yet!");
+  }
+
+  /**
+   * Configuration to get a handle to the Android driver
+   * @return initialized instance of the {@link AndroidDriver}
+   */
+  private WebDriver getRemoteAndroidWebDriver() {
+
+    DesiredCapabilities capabilities = new DesiredCapabilities();
+    capabilities.setCapability(CapabilityType.BROWSER_NAME, ANDROID_BROWSER_NAME);
+    capabilities.setCapability("deviceName", System.getProperty(ANDROID_DEVICE_NAME, "Android"));
+    capabilities.setCapability("platformName", System.getProperty(ANDROID_PLATFORM_NAME, "Android"));
+    capabilities.setCapability("app", System.getProperty(ANDROID_APK_PATH));
+
+    if (isSysPropAvailable(ANDROID_PLATFORM_VERSION)) {
+      capabilities.setCapability("platformVersion", System.getProperty(ANDROID_PLATFORM_VERSION, "5.0"));
+    }
+
+    if (isSysPropAvailable(ANDROID_APP_PKG)) {
+      capabilities.setCapability("appPackage", System.getProperty(ANDROID_APP_PKG));
+    }
+
+    if (isSysPropAvailable(ANDROID_APP_WAIT_PKG)) {
+      capabilities.setCapability("appWaitPackage", System.getProperty(ANDROID_APP_WAIT_PKG));
+    }
+
+    RemoteWebDriver remoteDriver = (RemoteWebDriver) initRemoteWebDriver(capabilities);
+    AndroidDriver driver = (AndroidDriver) remoteDriver;
+
+
+
+    return driver;
   }
 
 }

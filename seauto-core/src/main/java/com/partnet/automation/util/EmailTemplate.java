@@ -87,6 +87,7 @@ public abstract class EmailTemplate
 
   /**
    * Obtain the string of the processed template
+   * @return the processed template
    */
   public final String getProcessedTemplate()
   {

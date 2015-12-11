@@ -126,7 +126,7 @@ public abstract class Site
    * 
    * @param relativeUrl
    *          - relative url to navigate to. Example:
-   *          <code>/acct/orders-admin/fpdsAwardConsole.action</code>
+   *          <code>/acct/orders</code>
    */
   public void openRelative(final String relativeUrl)
   {
@@ -137,6 +137,7 @@ public abstract class Site
 
   /**
    * Get the title of the current page.
+   * @return title of the current page.
    */
   public String getCurrentPageTitle()
   {
@@ -161,8 +162,8 @@ public abstract class Site
   /**
    * Obtains the base URL of the given url.
    * 
-   * @param url
-   * @return
+   * @param url the current url, with path
+   * @return base url for http site
    */
   public String getBaseUrl(String url)
   {

@@ -29,7 +29,7 @@ import com.partnet.automation.page.panel.PanelProvider;
 
 /**
  * Base page object. Provides a common constructor for subclasses and various
- * helper methods to support {@link #initialize()} and {@link #verify()}.
+ * helper methods to support {@link #initialize(boolean)} and {@link #verify()}.
  * 
  * @author <a href="mailto:rbascom@part.net">rbascom</a>
  * @author fpedroza
@@ -66,6 +66,7 @@ public abstract class Page
 
   /**
    * Get the current title of the current page the browser is on
+   * @return String of the pages title
    */
   protected String getTitle()
   {
@@ -166,12 +167,17 @@ public abstract class Page
    * <p>
    * Override {@link #ready()} and {@link #verify()} for page specific behavior.
    * <p>
+   *   @param jumpTo - calls the {@link #jumpTo method} if true, intending to jump to the specific page via a URL path
    * 
-   * @throws IllegalStateException
+   * @throws IllegalStateException if ready or verify are in an illegal state
    */
-  public final void initialize()
+  public final void initialize(boolean jumpTo)
       throws IllegalStateException
   {
+    if(jumpTo) {
+      jumpTo();
+    }
+
     ready();
     verify();
   }
@@ -190,5 +196,20 @@ public abstract class Page
     // Intentionally left blank for child classes to optionally implement
     LOG.debug("Empty ready() method called for {}", this.getClass().getName());
   }
+
+  /**
+   * Jumps to a specific page via the url path.
+   * <p>
+   * Override this method in child page classes so other pages can jump to the specific page
+   * and test only what is needed. This should be used instead of using the app's default
+   * navigation menus and links to get to pages just to test a small feature.
+   */
+  protected void jumpTo()
+  {
+    // Intentionally left blank for child classes to optionally implement
+    LOG.debug("Empty jumpTo() method called for {}", this.getClass().getName());
+  }
+
+
 
 }

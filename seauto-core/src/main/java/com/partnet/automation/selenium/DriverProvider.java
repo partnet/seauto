@@ -33,13 +33,14 @@ public interface DriverProvider
 
   /**
    * Starts the specified web driver, for calling thread
+   * @param browser what browser to launch
    */
   void launch(Browser browser);
 
   /**
    * Gets the web driver for calling thread
    * 
-   * @return
+   * @return the current thread's {@link WebDriver}
    */
   WebDriver get();
 
@@ -51,8 +52,8 @@ public interface DriverProvider
   /**
    * Takes screenshot of the driver for the calling thread
    * 
-   * @param path
-   * @return
+   * @param path location where the screenshot should be saved at
+   * @return true if the save was successful, false otherwise.
    */
   boolean saveScreenshotAs(String path);
 

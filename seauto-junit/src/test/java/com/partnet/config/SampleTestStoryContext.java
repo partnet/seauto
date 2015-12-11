@@ -56,7 +56,7 @@ public class SampleTestStoryContext
    */
   public <T extends Page> T getPage(Class<T> clazz)
   {
-    return this.pageProvider.get(clazz);
+    return this.pageProvider.get(clazz, false);
   }
 
 

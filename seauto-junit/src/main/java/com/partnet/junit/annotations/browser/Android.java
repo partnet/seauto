@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.openqa.selenium.browserlaunchers;
+package com.partnet.junit.annotations.browser;
 
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.Proxy;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * workaround to allow selenium 2.44+ and also use default phanotmjs
- * implementation until the phantomjs people release a fix
- * https://github.com/detro/ghostdriver/issues/397 
+ * @author <a href="mailto:bbarker@part.net">bbarker</a>
  */
-public class Proxies
+@Target({
+    ElementType.METHOD, ElementType.TYPE
+})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Android
 {
 
-  public static Proxy extractProxy(Capabilities capabilities)
-  {
-    return Proxy.extractFrom(capabilities);
-  }
 }

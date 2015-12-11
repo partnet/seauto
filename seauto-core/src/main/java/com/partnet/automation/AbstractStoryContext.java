@@ -41,6 +41,9 @@ abstract public class AbstractStoryContext
    * key/value are over-written. Ensures if an existing key/value is found that
    * the type of the updated value (class name) is the same as the previous
    * value.
+   *
+   * @param key Object to use as the key
+   * @param value Object as the value, to be retrieved later in the test.
    * 
    * @throws IllegalStateException
    *           if the type of new value conflicts with the existing type
@@ -81,10 +84,9 @@ abstract public class AbstractStoryContext
    * Get the variable value for the given key. Only returns null iff a null was
    * stored.
    * 
-   * @param key
-   *          the key of the value to lookup
-   * @throws IllegalStateException
-   *           if a value for the key has not been previously added
+   * @param key the key of the value to lookup
+   * @return the object requested
+   * @throws IllegalStateException if a value for the key has not been previously added
    */
   public Object getVariable(Object key)
   {
@@ -98,9 +100,9 @@ abstract public class AbstractStoryContext
   /**
    * Get the variable value for the given key; may return null.
    * 
-   * @param key
-   *          the key of the value to lookup
+   * @param key the key of the value to lookup
    * @see #getVariable(Object) is preferred unless necessary
+   * @return the variable requested.
    */
   public Object getVariableAllowNull(Object key)
   {
@@ -115,8 +117,6 @@ abstract public class AbstractStoryContext
 
   /**
    * Add an action to take when the scenario completes
-   * 
-   * @param afterScenarioHandler
    */
   public void addAfterScenarioHandler(AfterScenarioHandler afterScenarioHandler)
   {

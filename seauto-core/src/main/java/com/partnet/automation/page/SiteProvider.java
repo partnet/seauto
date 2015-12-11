@@ -39,6 +39,7 @@ public abstract class SiteProvider<T extends Site>
   /**
    * Used by {@link #createSite()} to create new application-specific
    * {@link Site} instance to be used.
+   * @return new {@link Site} instance
    */
   abstract protected T newSiteInstance();
 
@@ -46,6 +47,7 @@ public abstract class SiteProvider<T extends Site>
    * Creates and initializes a {@link Site} instance to be used.
    * 
    * @see #newSiteInstance()
+   * @return instance of {@link Site}
    */
   public T createSite()
   {

@@ -38,8 +38,12 @@ public class DependencyContainer
    * 
    * @param clazz
    *          type of dependency to get
+   * @param <T>
+   *          Type of object to get from the container
    * @throws IllegalArgumentException
-   *           if dependency of type does not exist
+   *          if dependency of type does not exist
+   * @return
+   *          the object inside of the container
    */
   public <T extends Object> T get(Class<T> clazz)
   {
@@ -58,6 +62,8 @@ public class DependencyContainer
    *          type of dependency to add
    * @param instance
    *          the reference to the dependency to be added
+   * @param <T>
+   *          Object of dependency to add to the container
    * @throws IllegalStateException
    *           if container is finalized
    * @throws IllegalArgumentException

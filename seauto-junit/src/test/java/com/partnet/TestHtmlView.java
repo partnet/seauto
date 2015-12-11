@@ -52,14 +52,14 @@ public class TestHtmlView
   {
     { // Verify the box is filled by default
       String expectedFill = "Default Text";
-      String actualFill = pageProvider.get(HtmlTestPage.class).getInfoBoxMsg();
+      String actualFill = pageProvider.get(HtmlTestPage.class, true).getInfoBoxMsg();
 
       Assert.assertEquals("The default value is not what is expected!", expectedFill, actualFill);
     }
 
     { // Verify the field changes
       String expectedFill = "fksadfdsf890dsaf8dsa90f8sda9fds89fs7d8a9fas";
-      String actualFill = pageProvider.get(HtmlTestPage.class).setInfoBox(expectedFill).getInfoBoxMsg();
+      String actualFill = pageProvider.get(HtmlTestPage.class, true).setInfoBox(expectedFill).getInfoBoxMsg();
 
       Assert.assertEquals("Setting value of a text box did not work correctly!", expectedFill, actualFill);
     }
@@ -69,7 +69,7 @@ public class TestHtmlView
   public void test_selectByVisibleTextDefaultOption()
   {
     String expectedOption = "Geo";
-    String actualOption = pageProvider.get(HtmlTestPage.class).getManufactSelectedOption();
+    String actualOption = pageProvider.get(HtmlTestPage.class, true).getManufactSelectedOption();
     Assert.assertEquals("Default selected option was not correct!", expectedOption, actualOption);
   }
 
@@ -77,7 +77,7 @@ public class TestHtmlView
   public void test_selectByVisibleText()
   {
     String expectedOption = "Ford";
-    String actualOption = pageProvider.get(HtmlTestPage.class).selectManufactOptionByVisibleText(expectedOption).getManufactSelectedOption();
+    String actualOption = pageProvider.get(HtmlTestPage.class, true).selectManufactOptionByVisibleText(expectedOption).getManufactSelectedOption();
 
     Assert.assertEquals("Option was not selected correctly!", expectedOption, actualOption);
   }
@@ -88,7 +88,7 @@ public class TestHtmlView
     String expectedOption = "Chevy";
     String expectedOptionValue = "chevy";
 
-    String actualOption = pageProvider.get(HtmlTestPage.class).selectManufactOptionByValue(expectedOptionValue).getManufactSelectedOption();
+    String actualOption = pageProvider.get(HtmlTestPage.class, true).selectManufactOptionByValue(expectedOptionValue).getManufactSelectedOption();
 
     Assert.assertEquals("Option was not selected correctly!", expectedOption, actualOption);
   }
@@ -97,7 +97,7 @@ public class TestHtmlView
   public void test_ajaxListener()
   {
 
-    JSONObject jsonRepsonse = pageProvider.get(HtmlTestPage.class).clickAndWaitForAjaxResponse();
+    JSONObject jsonRepsonse = pageProvider.get(HtmlTestPage.class, true).clickAndWaitForAjaxResponse();
 
     Assert.assertEquals("JSON response title was not what was expected!", "example glossary", jsonRepsonse.getJSONObject("glossary").get("title"));
 
@@ -113,7 +113,7 @@ public class TestHtmlView
   {
     String expectedMessage = "Test Alert Message";
 
-    String actualMessage = pageProvider.get(HtmlTestPage.class).clickAlertBtnAndAcceptAlert();
+    String actualMessage = pageProvider.get(HtmlTestPage.class, true).clickAlertBtnAndAcceptAlert();
 
     Assert.assertEquals("The expected message from the alert was not what was expected!", expectedMessage, actualMessage);
     
@@ -127,9 +127,9 @@ public class TestHtmlView
   {
     String expectedMessage = "Test Confirm Message";
 
-    String actualMessage = pageProvider.get(HtmlTestPage.class).clickConfirmBtnAndAcceptAlert();
+    String actualMessage = pageProvider.get(HtmlTestPage.class, true).clickConfirmBtnAndAcceptAlert();
 
-    actualMessage = pageProvider.get(HtmlTestPage.class).clickConfirmBtnAndAcceptAlert();
+    actualMessage = pageProvider.get(HtmlTestPage.class, true).clickConfirmBtnAndAcceptAlert();
 
     Assert.assertEquals("The expected message from the alert was not what was expected!", expectedMessage, actualMessage);
     
@@ -142,7 +142,7 @@ public class TestHtmlView
   @PhantomJs
   public void test_pageReload()
   {
-    pageProvider.get(HtmlTestPage.class).clickReloadBtnAndWait();
+    pageProvider.get(HtmlTestPage.class, true).clickReloadBtnAndWait();
     ensureDriverStillResponding();
   }
   
@@ -151,13 +151,13 @@ public class TestHtmlView
   public void test_pageReloadError()
   {
     System.setProperty(WAIT_FOR_PAGE_PROP, "90abc");
-    pageProvider.get(HtmlTestPage.class).clickReloadBtnAndWait();
+    pageProvider.get(HtmlTestPage.class, true).clickReloadBtnAndWait();
   }
   
   private void ensureDriverStillResponding()
   {
     String expectedInfoMsg = "Default Text";
-    String actualInfoMsg = pageProvider.get(HtmlTestPage.class).getInfoBoxMsg();
+    String actualInfoMsg = pageProvider.get(HtmlTestPage.class, true).getInfoBoxMsg();
 
     Assert.assertEquals("Looks like the driver may not be responding correctly!", expectedInfoMsg, actualInfoMsg);
   }

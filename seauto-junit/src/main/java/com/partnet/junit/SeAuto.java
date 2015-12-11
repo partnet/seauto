@@ -18,6 +18,7 @@ package com.partnet.junit;
 
 import java.lang.annotation.Annotation;
 
+import com.partnet.junit.annotations.browser.Android;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.runner.notification.RunNotifier;
@@ -61,8 +62,7 @@ public class SeAuto
       throws Exception
   {
     // get fully injected instance of the test class
-    Object obj = weld.instance().select(klass).get();
-    return obj;
+    return weld.instance().select(klass).get();
   }
 
   @Override
@@ -70,52 +70,93 @@ public class SeAuto
   {
     DriverProvider driverProvider = weld.instance().select(DriverProvider.class).get();
 
-    boolean runBrowser = !super.isIgnored(method);
+    if (super.isIgnored(method)) {
+      runChild(method, notifier);
+      return;
+    }
 
-    if (runBrowser) {
-      // prefer annotations of methods over class, but use class as a fallback.
-      Browser browser = getBrowser(method.getAnnotations());
+    // prefer annotations of methods over class, but use class as a fallback.
+    Browser browser = getBrowser(method.getAnnotations());
 
-      if (browser == null) {
-        browser = getBrowser(klass.getAnnotations());
-      }
+    if (browser == null) {
+      browser = getBrowser(klass.getAnnotations());
+    }
 
+    try {
       driverProvider.launch(browser);
+    } catch (Throwable e) {
+      //shut down driver if it is running
+      finalizeTest(method, driverProvider);
+      throw e;
     }
 
-    super.runChild(method, notifier);
 
-    if (runBrowser) {
+    try {
+      super.runChild(method, notifier);
+    } finally {
+      //make sure the browser is killed
+      finalizeTest(method, driverProvider);
+    }
+  }
 
-      String screenshotPath = PathUtils.getProjectPath().appendFolders("target", "screenshot").appendFile(klass.getName() + "-" + method.getName() + ".png").toString();
 
-      log.debug("Screenshot saved to: {}", screenshotPath);
-      driverProvider.saveScreenshotAs(screenshotPath);
-      driverProvider.end();
+  /**
+   * Finalizes the test by taking a screenshot, then killing the browser
+   * @param method {@link FrameworkMethod} for the running test
+   * @param driverProvider Web driver provider
+   */
+  private void finalizeTest(FrameworkMethod method, DriverProvider driverProvider)
+  {
+    if (super.isIgnored(method)) {
+      return;
     }
 
+    takeScreenshot(method, driverProvider);
+    log.debug("Ending browser for test " + getTestName(method));
+    driverProvider.end();
+  }
+
+  private void takeScreenshot(FrameworkMethod method, DriverProvider driverProvider)
+  {
+    String screenshotPath = PathUtils.getProjectPath().appendFolders("target", "screenshot")
+        .appendFile(getTestName(method) + ".png").toString();
+    log.debug("Screenshot saved to: {}", screenshotPath);
+    driverProvider.saveScreenshotAs(screenshotPath);
+  }
+
+  private String getTestName(FrameworkMethod method)
+  {
+    return klass.getName() + "-" + method.getName();
   }
 
   /**
    * Helper method to determine what browser to launch given the annotations
    * 
-   * @param annotations
-   * @return
+   * @param annotations array of {@link Annotation}
+   * @return the {@link Browser} enum
    */
   private Browser getBrowser(Annotation[] annotations)
   {
 
     for (Annotation annot : annotations) {
 
-      if (annot.annotationType() == HTMLUnit.class) return Browser.HTMLUNIT;
-      else
-        if (annot.annotationType() == PhantomJs.class) return Browser.PHANTOMJS;
-        else
-          if (annot.annotationType() == Firefox.class) return Browser.FIREFOX;
-          else
-            if (annot.annotationType() == Chrome.class) return Browser.CHROME;
-            else
-              if (annot.annotationType() == IE.class) return Browser.IE;
+      if (annot.annotationType() == HTMLUnit.class)
+        return Browser.HTMLUNIT;
+
+      if (annot.annotationType() == PhantomJs.class)
+        return Browser.PHANTOMJS;
+
+      if (annot.annotationType() == Firefox.class)
+        return Browser.FIREFOX;
+
+      if (annot.annotationType() == Chrome.class)
+        return Browser.CHROME;
+
+      if (annot.annotationType() == IE.class)
+        return Browser.IE;
+
+      if (annot.annotationType() == Android.class)
+        return Browser.ANDROID;
     }
 
     return null;

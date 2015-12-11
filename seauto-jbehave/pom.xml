@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.partnet</groupId>
     <artifactId>seauto</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2-SNAPSHOT</version>
   </parent>
   <artifactId>seauto-jbehave</artifactId>
   <packaging>jar</packaging>

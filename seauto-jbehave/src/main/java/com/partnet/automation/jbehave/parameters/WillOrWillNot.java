@@ -37,6 +37,8 @@ public enum WillOrWillNot
    * Converts the given value to a boolean (if possible)
    * 
    * @see #toBoolean()
+   * @param value string representation of will or will not
+   * @return true if "will", false if "will not"
    */
   public static boolean toBoolean(String value)
   {

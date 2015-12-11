@@ -83,7 +83,7 @@ public abstract class AbstractDriverLifecycleListener
   /**
    * Places the Scenario into the logging {@link MDC}
    * 
-   * @param scenario
+   * @param scenario name of the scenario being run.
    */
   public void setup(Scenario scenario)
   {

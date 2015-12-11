@@ -39,7 +39,7 @@ public class TestPageState
   @Test
   public void test_readyCalledInPageObjects()
   {
-    DummyPage dummyPage = pageProvider.get(DummyPage.class);
+    DummyPage dummyPage = pageProvider.get(DummyPage.class, false);
 
     Assert.assertTrue(dummyPage.wasReadyCalled());
 
@@ -48,7 +48,7 @@ public class TestPageState
   @Test
   public void test_verifyCalledInPageObjects()
   {
-    DummyPage dummyPage = pageProvider.get(DummyPage.class);
+    DummyPage dummyPage = pageProvider.get(DummyPage.class, false);
 
     Assert.assertTrue(dummyPage.wasVerifyCalled());
   }

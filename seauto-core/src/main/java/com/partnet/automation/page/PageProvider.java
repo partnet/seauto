@@ -48,13 +48,17 @@ public class PageProvider
    * 
    * @param clazz
    *          type of Page requested
+   * @param jumpTo
+   *          set true to call the page's {@link Page#jumpTo()} method before verifying the page.
+   * @param <T>
+   *          {@link Page} instance
    * @return Page of the specified type
-   * @see Page#initialize()
+   * @see Page#initialize(boolean)
    */
-  public <T extends Page> T get(final Class<T> clazz)
+  public <T extends Page> T get(final Class<T> clazz, boolean jumpTo)
   {
     T page = createPage(clazz);
-    page.initialize();
+    page.initialize(jumpTo);
     return page;
   }
 
@@ -75,7 +79,7 @@ public class PageProvider
   }
 
   /**
-   * @see #initializeDependencies()
+   * @see #initializeDependencies(DependencyContainer)
    */
   private <T extends Page> T createPage(Class<T> pageClass)
   {
